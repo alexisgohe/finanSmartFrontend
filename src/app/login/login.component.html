@@ -1,0 +1,8 @@
+<h2>Iniciar Sesión</h2>
+<form [formGroup]="formLogin">
+  <div>
+    <input formControlName="nombre_usuario" type="text">
+    <input formControlName="password" type="password">
+  </div>
+</form>
+<button class="login-button" (click)="onLogin()">Ingresar</button>
