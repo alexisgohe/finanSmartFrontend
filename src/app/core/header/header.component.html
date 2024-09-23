@@ -1,0 +1,53 @@
+<!-- header.component.html -->
+<header class="bg-white border-b h-16 flex items-center justify-between px-4">
+  <!-- Botón para abrir el Sidebar (solo en pantallas pequeñas) -->
+  <button class="text-xl" (click)="onToggleSidebar()">
+    <fa-icon [icon]="faBars" class="h-4 w-4"></fa-icon>
+  </button>
+
+  <!-- Búsqueda, ícono de notificaciones y menú de usuario -->
+  <div class="flex items-center space-x-4">
+    <input type="search" placeholder="Buscar..." class="w-64 px-3 py-2 border rounded-lg" />
+
+    <button class="relative h-8 w-8 rounded-full text-xl">
+      <fa-icon [icon]="faBell" class="h-4 w-4"></fa-icon>
+    </button>
+
+    <!-- Menú desplegable de usuario -->
+    <div class="relative">
+      <button class="relative h-8 w-8 rounded-full text-xl" (click)="toggleMenu()">
+        <fa-icon [icon]="faUser" class="h-4 w-4"></fa-icon>
+      </button>
+
+      <div *ngIf="menuOpen" class="absolute right-0 mt-2 w-56 bg-white shadow-lg rounded-lg z-50">
+        <div class="p-4 border-b">
+          <p class="text-sm font-medium">Alexis GH</p>
+          <p class="text-xs text-gray-500">alexisgh&#64;gmail.com</p>
+        </div>
+        <div class="p-2">
+          <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 5.121A1.5 1.5 0 016.343 4.5h11.314a1.5 1.5 0 011.222 2.621l-6.364 6.364a1.5 1.5 0 01-2.121 0l-6.364-6.364A1.5 1.5 0 015.121 5.12z" />
+            </svg>
+            <span>Perfil</span>
+          </a>
+          <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            <span>Configuración</span>
+          </a>
+        </div>
+        <div class="border-t p-2">
+          <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+            </svg>
+            <span>Cerrar sesión</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+

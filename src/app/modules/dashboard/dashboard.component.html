@@ -96,9 +96,10 @@
       <div class="card-content space-y-4">
         <div *ngFor="let transaccion of transacciones" class="flex justify-between items-center">
           <div class="flex items-center space-x-4">
-            <div class="w-8 h-8 rounded-full flex items-center justify-center" [ngClass]="transaccion.iconColor">
-              <fa-icon [icon]="faShoppingBag" class="h-4 w-4 text-primary-foreground"></fa-icon>
+            <div class="w-8 h-8 rounded-full flex items-center justify-center text-center" [ngClass]="transaccion.iconColor">
+              <fa-icon [icon]="faShoppingBag" class="h-4 w-4 text-primary-foreground flex justify-center"></fa-icon>
             </div>
+
             <div>
               <p class="text-sm font-medium">{{ transaccion.name }}</p>
               <p class="text-xs text-muted-foreground">{{ transaccion.fecha }}</p>
@@ -113,4 +114,3 @@
 
   </div>
 </div>
-

@@ -24,7 +24,7 @@
 }
 
 .card {
-  @apply bg-white rounded-lg shadow-md border border-gray-200 p-2;
+  @apply bg-white rounded-lg shadow-md border border-gray-200 p-4;
 }
 
 .text-muted-foreground {
