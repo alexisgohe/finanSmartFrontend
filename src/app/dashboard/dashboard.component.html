@@ -1,3 +1,116 @@
-<p>
-  dashboard works!
-</p>
+<div class="p-8 bg-gray-100 min-h-screen">
+  <h1 class="text-4xl font-bold mb-8">Dashboard de Presupuesto Personal</h1>
+
+  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+
+    <!-- Balance Total -->
+    <div class="col-span-2 card">
+      <div class="card-header">
+        <h3 class="text-sm font-medium">Balance Total Disponible</h3>
+        <fa-icon [icon]="faDollarSign" class="h-4 w-4 text-gray-500"></fa-icon>
+      </div>
+      <div class="card-content">
+        <div class="text-4xl font-bold">${{ balance }}</div>
+        <p class="text-xs text-muted-foreground">+20.1% del mes pasado</p>
+      </div>
+    </div>
+
+    <!-- Gastos del Mes -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="text-sm font-medium">Gastos del Mes</h3>
+        <fa-icon [icon]="faArrowDown" class="h-4 w-4 text-red-500"></fa-icon>
+      </div>
+      <div class="card-content">
+        <div class="text-2xl font-bold">${{ gastos }}</div>
+        <p class="text-xs text-muted-foreground">-12% del mes pasado</p>
+      </div>
+    </div>
+
+    <!-- Ingresos del Mes -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="text-sm font-medium">Ingresos del Mes</h3>
+        <fa-icon [icon]="faArrowUp" class="h-4 w-4 text-green-500"></fa-icon>
+      </div>
+      <div class="card-content">
+        <div class="text-2xl font-bold">${{ ingresos }}</div>
+        <p class="text-xs text-muted-foreground">+8% del mes pasado</p>
+      </div>
+    </div>
+
+    <!-- Metas de Ahorro -->
+    <div class="col-span-2 card">
+      <div class="card-header">
+        <h3>Metas de Ahorro</h3>
+      </div>
+      <div class="card-content space-y-4">
+        <div *ngFor="let meta of metasAhorro">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-sm font-medium">{{ meta.name }}</span>
+            <span class="text-sm font-medium">{{ meta.value }}%</span>
+          </div>
+          <div class="h-2 bg-gray-200 rounded-full">
+            <div class="h-full bg-primary rounded-full" [style.width.%]="meta.value"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Deuda Acumulada -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="text-sm font-medium">Deuda Acumulada</h3>
+        <fa-icon [icon]="faCreditCard" class="h-4 w-4 text-gray-500"></fa-icon>
+      </div>
+      <div class="card-content">
+        <div class="text-2xl font-bold">${{ deuda }}</div>
+        <p class="text-xs text-muted-foreground">-5% del mes pasado</p>
+      </div>
+    </div>
+
+    <!-- Progreso del Presupuesto -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="text-sm font-medium">Progreso del Presupuesto</h3>
+        <fa-icon [icon]="faPiggyBank" class="h-4 w-4 text-gray-500"></fa-icon>
+      </div>
+      <div class="card-content flex justify-center items-center pt-6">
+        <div class="relative h-24 w-24">
+          <svg class="h-full w-full" viewBox="0 0 100 100">
+            <circle class="text-gray-300" stroke-width="10" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50"></circle>
+            <circle class="text-primary" stroke-width="10" stroke-dasharray="188.4" [attr.stroke-dashoffset]="((100 - presupuestoProgreso) / 100) * 251" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50"></circle>
+          </svg>
+          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl font-bold">
+            {{ presupuestoProgreso }}%
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transacciones Recientes -->
+    <div class="col-span-2 card">
+      <div class="card-header">
+        <h3>Transacciones Recientes</h3>
+      </div>
+      <div class="card-content space-y-4">
+        <div *ngFor="let transaccion of transacciones" class="flex justify-between items-center">
+          <div class="flex items-center space-x-4">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center" [ngClass]="transaccion.iconColor">
+              <fa-icon [icon]="faShoppingBag" class="h-4 w-4 text-primary-foreground"></fa-icon>
+            </div>
+            <div>
+              <p class="text-sm font-medium">{{ transaccion.name }}</p>
+              <p class="text-xs text-muted-foreground">{{ transaccion.fecha }}</p>
+            </div>
+          </div>
+          <p class="text-sm font-medium" [ngClass]="{ 'text-green-500': transaccion.amount > 0, 'text-red-500': transaccion.amount < 0 }">
+            {{ transaccion.amount | currency }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
