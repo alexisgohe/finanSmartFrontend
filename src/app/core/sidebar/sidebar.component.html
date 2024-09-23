@@ -1,0 +1,20 @@
+<div [ngClass]="{'block': isOpen, 'hidden': !isOpen}" class="flex h-screen bg-gray-100">
+  <!-- Sidebar -->
+  <aside
+    class="bg-white w-64 min-h-screen flex flex-col transition-all duration-300 ease-in-out fixed lg:relative lg:translate-x-0 z-50"
+    [ngClass]="{'-translate-x-full': !sidebarOpen, 'translate-x-0': sidebarOpen}">
+    <div class="flex items-center justify-between h-16 px-4 border-b">
+      <span class="text-xl font-bold">Finan Smart</span>
+    </div>
+    <nav class="flex-1 p-4">
+      <ul class="space-y-2">
+        <li *ngFor="let menuItem of menuItems">
+          <button (click)="navigation(menuItem.url)" class="w-full justify-start flex items-center">
+            <fa-icon class="flex mr-2 h-4 w-4" [icon]="menuItem.icon"></fa-icon>
+            {{ menuItem.label }}
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+</div>
