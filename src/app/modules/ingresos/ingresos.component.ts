@@ -1,15 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { faCreditCard, faMoneyBill1, faEye, faCalendarDay } from '@fortawesome/free-solid-svg-icons';
-
-interface Ingreso {
-  id: string;
-  monto: number;
-  fecha: string;
-  descripcion: string;
-  categoria: string;
-  metodoPago: 'efectivo' | 'tarjeta';
-}
+import { GeneralService } from '../../service/general.service';
+import { Ingreso } from '../../models/ingreso.model';
 
 @Component({
   selector: 'app-ingresos',
@@ -19,31 +12,56 @@ interface Ingreso {
 })
 export class IngresosComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+  constructor(private generalService: GeneralService) { }
 
   busqueda: string = '';
   paginaActual: number = 1;
   ingresosPorPagina: number = 5;
   rangoVista: 'quincena' | 'mes' = 'mes';
 
-  ingresos: Ingreso[] = [
-    { id: 'ING001', monto: 1000, fecha: '2023-06-01', descripcion: 'Salario mensual', categoria: 'Salario', metodoPago: 'tarjeta' },
-    { id: 'ING002', monto: 200, fecha: '2023-06-05', descripcion: 'Venta de artículos usados', categoria: 'Ventas', metodoPago: 'efectivo' },
-    { id: 'ING003', monto: 50, fecha: '2023-06-10', descripcion: 'Reembolso de gastos', categoria: 'Reembolsos', metodoPago: 'tarjeta' }
-  ];
+  ingresos: Ingreso[] = [];
+  ingresosEnPagina: Ingreso[] = [];
+  currentPage = 1;
+  pageSize = 10;
+
+  ngOnInit() {
+    this.getIngresos();
+  }
+
+  getIngresos() {
+    this.generalService.getData('ingresos/').subscribe({
+      next: (data) => {
+        this.ingresos = data.data
+        this.updateIngresosEnPagina();
+      },
+      error: (error) => console.error('Error:', error)
+    });
+  }
+
+  // Íconos de FontAwesome
+  faCreditCard = faCreditCard;
+  faMoneyBill1 = faMoneyBill1;
+  faEye = faEye;
+  faCalendarDay = faCalendarDay;
+
+
+
+
+
+  updateIngresosEnPagina() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    this.ingresosEnPagina = this.ingresos.slice(startIndex, startIndex + this.pageSize);
+  }
 
   getRangoTexto(): string {
     return this.rangoVista === 'quincena' ? 'Quincenal' : 'Mensual';
   }
 
-  get ingresosFiltrados(): Ingreso[] {
+  get ingresosFiltrados() {
     return this.ingresos.filter(ingreso =>
-      ingreso.descripcion.toLowerCase().includes(this.busqueda.toLowerCase()) ||
-      ingreso.categoria.toLowerCase().includes(this.busqueda.toLowerCase()) ||
-      ingreso.id.toLowerCase().includes(this.busqueda.toLowerCase())
+      ingreso.descripcion_ingreso.toLowerCase().includes(this.busqueda.toLowerCase())
+      // ingreso.categoria.toLowerCase().includes(this.busqueda.toLowerCase())
+      // ingreso.ingreso_id.includes(this.busqueda.toLowerCase())
     );
   }
 
@@ -51,23 +69,13 @@ export class IngresosComponent implements OnInit {
     return Math.ceil(this.ingresosFiltrados.length / this.ingresosPorPagina);
   }
 
-  get ingresosEnPagina(): Ingreso[] {
-    const start = (this.paginaActual - 1) * this.ingresosPorPagina;
-    return this.ingresosFiltrados.slice(start, start + this.ingresosPorPagina);
-  }
+  // get ingresosEnPagina(): Ingreso[] {
+  //   const start = (this.paginaActual - 1) * this.ingresosPorPagina;
+  //   return this.ingresosFiltrados.slice(start, start + this.ingresosPorPagina);
+  // }
 
   get totalIngresos(): number {
-    return this.ingresos.reduce((sum, ingreso) => sum + ingreso.monto, 0);
-  }
-
-  handleAgregarIngreso() {
-    console.log('Agregar nuevo ingreso');
-    // Aquí iría la lógica para agregar un nuevo ingreso
-  }
-
-  handleVerDetalle(id: string) {
-    console.log(`Ver detalle del ingreso ${id}`);
-    // Aquí iría la lógica para ver el detalle del ingreso
+    return this.ingresos.reduce((sum, ingreso) => sum + ingreso.monto_ingreso, 0);
   }
 
   cambiarPaginaAnterior() {
@@ -82,8 +90,8 @@ export class IngresosComponent implements OnInit {
     }
   }
 
-  trackById(index: number, ingreso: Ingreso): string {
-    return ingreso.id;
+  trackById(index: number, ingreso: Ingreso): number {
+    return ingreso.ingreso_id;
   }
 
   get deshabilitarAnterior(): boolean {
@@ -94,9 +102,4 @@ export class IngresosComponent implements OnInit {
     return this.paginaActual === this.totalPaginas;
   }
 
-  // Íconos de FontAwesome
-  faCreditCard = faCreditCard;
-  faMoneyBill1 = faMoneyBill1;
-  faEye = faEye;
-  faCalendarDay = faCalendarDay;
 }

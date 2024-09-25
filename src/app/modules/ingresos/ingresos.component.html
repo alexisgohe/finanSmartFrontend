@@ -1,7 +1,7 @@
 <div class="p-8 bg-gray-100 min-h-screen">
   <div class="flex justify-between items-center p-4">
     <h2 class="text-2xl font-bold">Ingresos del Usuario</h2>
-    <button (click)="handleAgregarIngreso()" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center">
+    <button class="bg-blue-500 text-white px-4 py-2 rounded flex items-center">
       <span class="mr-2">+</span> Agregar Ingreso
     </button>
   </div>
@@ -45,14 +45,14 @@
       </thead>
       <tbody>
         <tr *ngFor="let ingreso of ingresosEnPagina; trackBy: trackById">
-          <td class="table-cell-class">{{ ingreso.id }}</td>
-          <td class="table-cell-class">{{ ingreso.monto | currency:'USD':'symbol':'1.2-2' }}</td>
-          <td class="table-cell-class">{{ ingreso.fecha | date }}</td>
-          <td class="table-cell-class hidden md:table-cell">{{ ingreso.descripcion }}</td>
+          <td class="table-cell-class">{{ ingreso.ingreso_id }}</td>
+          <td class="table-cell-class">{{ ingreso.monto_ingreso | currency:'USD':'symbol':'1.2-2' }}</td>
+          <td class="table-cell-class">{{ ingreso.fecha_ingreso | date }}</td>
+          <td class="table-cell-class hidden md:table-cell">{{ ingreso.descripcion_ingreso }}</td>
           <td class="table-cell-class text-center"> <span class="bg-gray-300 rounded-full px-2 py-1 text-xs font-bold">{{
               ingreso.categoria }}</span></td>
           <td class="table-cell-class text-center">
-            <ng-container *ngIf="ingreso.metodoPago === 'tarjeta'; else efectivo">
+            <ng-container *ngIf="ingreso.transferencia">
               <fa-icon [icon]="faCreditCard" class="h-4 w-4 text-blue-500"></fa-icon>
             </ng-container>
             <ng-template #efectivo>
@@ -60,8 +60,8 @@
             </ng-template>
           </td>
           <td class="table-cell-class text-center">
-            <button (click)="handleVerDetalle(ingreso.id)"
-            class="bg-gray-100 px-2 py-1 rounded">
+            <button
+              class="bg-gray-100 px-2 py-1 rounded">
               <fa-icon [icon]="faEye" class="text-sm"></fa-icon>
               Ver</button>
           </td>

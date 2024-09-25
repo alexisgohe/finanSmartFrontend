@@ -21,6 +21,7 @@
     "@fortawesome/angular-fontawesome": "^0.15.0",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "cors": "^2.8.5",
     "lucide-angular": "^0.445.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
