@@ -14,6 +14,8 @@ import { HeaderComponent } from './core/header/header.component';
 import { CommonModule } from '@angular/common';
 import { IngresosComponent } from './modules/ingresos/ingresos.component';
 import { CategoriasComponent } from './modules/categorias/categorias.component';
+import { AuthService } from './service/auth.service';
+import { GeneralService } from './service/general.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { CategoriasComponent } from './modules/categorias/categorias.component';
     CommonModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    AuthService,
+    GeneralService,
+    // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
