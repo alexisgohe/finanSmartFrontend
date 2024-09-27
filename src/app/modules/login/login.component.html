@@ -1,26 +1,128 @@
-<div class="flex min-h-screen bg-gray-100">
-  <!-- Columna izquierda: Imagen -->
-  <div class="hidden lg:flex w-1/2 bg-cover bg-center"
-       style="background-image: url('https://icorp.com.mx/wp-content/uploads/2020/01/10-Practicas-basicas-para-manejar-las-finanzas-personales.webp');">
-  </div>
+<div class="relative min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="container max-w-4xl flex shadow-lg rounded-lg overflow-hidden relative">
+    <!-- Contenedor principal -->
+    <div
+      *ngIf="isLogin"
+      class="panel-container flex w-full h-full transition-all duration-1000 ease-in-out transform"
+      [ngClass]="{ 'animate-fadeIn': isLogin, 'animate-fadeOut': !isLogin }"
+    >
+      <!-- Panel izquierdo: Login -->
+      <div
+        class="flex w-full h-screen bg-white p-8 transition-all duration-1000 ease-in-out transform"
+        [ngClass]="{ 'animate-fadeIn': isLogin, 'animate-fadeOut': !isLogin }"
+      >
+        <div class="w-1/2 flex flex-col justify-center items-center">
+          <h2 class="text-3xl font-bold text-center mb-6">Iniciar Sesión</h2>
+          <form [formGroup]="formLogin" class="w-3/4">
+            <div class="mb-4">
+              <label for="nombre_usuario" class="block text-gray-700 mb-2">
+                Usuario
+              </label>
+              <input
+                id="nombre_usuario"
+                formControlName="nombre_usuario"
+                type="text"
+                class="input-field"
+              />
+            </div>
 
-  <!-- Columna derecha: Formulario -->
-  <div class="flex w-full lg:w-1/2 items-center justify-center bg-white p-8">
-    <div class="form-container">
-      <h2 class="text-3xl font-bold text-center mb-6">Iniciar Sesión</h2>
-      <form [formGroup]="formLogin">
-        <div class="mb-4">
-          <label for="nombre_usuario" class="block text-gray-700 mb-2">Usuario</label>
-          <input id="nombre_usuario" formControlName="nombre_usuario" type="text" class="input-field">
+            <div class="mb-4">
+              <label for="password" class="block text-gray-700 mb-2">
+                Contraseña
+              </label>
+              <input
+                id="password"
+                formControlName="password"
+                type="password"
+                class="input-field"
+              />
+            </div>
+
+            <button
+              (click)="onLogin()"
+              class="w-full bg-blue-500 text-white py-2 rounded-lg transform transition duration-500 hover:bg-blue-600 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring focus:ring-blue-300 animate-pop"
+            >
+              Ingresar
+            </button>
+          </form>
         </div>
-
-        <div class="mb-4">
-          <label for="password" class="block text-gray-700 mb-2">Contraseña</label>
-          <input id="password" formControlName="password" type="password" class="input-field">
+        <div class="w-1/2 flex items-center justify-center">
+          <button
+            class="bg-gray-700 text-white px-4 py-2 rounded-lg transform transition duration-500 hover:bg-gray-600 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring focus:ring-gray-300 animate-pop"
+            (click)="toggleLogin()"
+          >
+            ¿No tienes cuenta? Regístrate
+          </button>
         </div>
+      </div>
+    </div>
 
-        <button (click)="onLogin()" class="button">Ingresar</button>
-      </form>
+    <div
+      class="panel-container flex w-full h-full transition-all duration-1000 ease-in-out transform"
+      [ngClass]="{ 'animate-fadeIn': !isLogin, 'animate-fadeOut': isLogin }"
+      *ngIf="!isLogin"
+    >
+      <!-- Panel derecho: Registro -->
+      <div
+        class="flex w-full h-screen bg-gray-100 p-8 transition-all duration-1000 ease-in-out transform"
+        [ngClass]="{ 'animate-fadeIn': !isLogin, 'animate-fadeOut': isLogin }"
+      >
+        <div class="w-1/2 flex items-center justify-center">
+          <button
+            class="bg-gray-700 text-white px-4 py-2 rounded-lg transform transition duration-500 hover:bg-gray-600 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring focus:ring-gray-300 animate-pop"
+            (click)="toggleLogin()"
+          >
+            ¿Ya tienes cuenta? Inicia sesión
+          </button>
+        </div>
+        <div class="w-1/2 flex flex-col justify-center items-center">
+          <h2 class="text-3xl font-bold text-center mb-6">Crear Cuenta</h2>
+          <form [formGroup]="formRegister" class="w-3/4">
+            <div class="mb-4">
+              <label for="nombre_usuario" class="block text-gray-700 mb-2">
+                Usuario
+              </label>
+              <input
+                id="nombre_usuario"
+                formControlName="nombre_usuario"
+                type="text"
+                class="input-field"
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="email" class="block text-gray-700 mb-2">
+                Correo Electrónico
+              </label>
+              <input
+                id="email"
+                formControlName="email"
+                type="email"
+                class="input-field"
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="password" class="block text-gray-700 mb-2">
+                Contraseña
+              </label>
+              <input
+                id="password"
+                formControlName="password"
+                type="password"
+                class="input-field"
+              />
+            </div>
+
+            <button
+              (click)="onRegister()"
+              class="w-full bg-blue-500 text-white py-2 rounded-lg transform transition duration-500 hover:bg-blue-600 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring focus:ring-blue-300 animate-pop"
+            >
+              Registrarse
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </div>

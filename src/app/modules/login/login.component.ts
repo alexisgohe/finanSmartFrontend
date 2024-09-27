@@ -31,6 +31,12 @@ export class LoginComponent {
       nombre_usuario: ["", Validators.compose([Validators.email, Validators.required, Validators.maxLength(50)])],
       password: ["", Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(50)])]
     });
+
+    this.formRegister = this.formbuilder.group({
+      nombre_usuario: [''],
+      email: [''],
+      password: [''],
+    });
   }
 
   onLogin() {
@@ -59,5 +65,15 @@ export class LoginComponent {
     );
   }
 
+  formRegister!: FormGroup;
+  isLogin = true; // Para controlar el estado de login/registro
+
+  toggleLogin() {
+    this.isLogin = !this.isLogin;
+  }
+
+  onRegister() {
+    // Lógica de registro
+  }
 
 }
