@@ -22,7 +22,9 @@
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "cors": "^2.8.5",
+    "dayjs": "^1.11.13",
     "lucide-angular": "^0.445.0",
+    "ngx-daterangepicker-material": "^6.0.4",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"

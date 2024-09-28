@@ -10,17 +10,19 @@
     <div class="flex justify-between items-center mb-4">
       <div class="w-[180px]">
         <label class="block text-sm font-medium text-gray-700">Seleccionar rango</label>
-        <select [(ngModel)]="rangoVista"
-          class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-          <option value="quincena">Quincenal</option>
-          <option value="mes">Mensual</option>
-        </select>
+        <input type="text"
+          class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+          ngxDaterangepickerMd [(ngModel)]="selectedRange" (change)="onDateRangeChange($event)"
+          [locale]="{ format: 'DD/MM/YYYY' }" placeholder="Seleccionar rango de fechas" />
       </div>
-      <div class="w-[180px]">
+      <!-- [ranges]="customRanges" -->
+
+      <div class="w-[180px] flex items-center">
         <fa-icon [icon]="faCalendarDay" class="h-4 w-4 text-gray-500 px-2"></fa-icon>
-        <span>Rango: {{ getRangoTexto() }}</span>
+        <span>Rango: {{ rangoTexto }}</span>
       </div>
     </div>
+
 
     <div class="flex justify-between items-center mb-4">
       <div class="flex items-center space-x-2">
@@ -49,8 +51,9 @@
           <td class="table-cell-class">{{ ingreso.monto_ingreso | currency:'USD':'symbol':'1.2-2' }}</td>
           <td class="table-cell-class">{{ ingreso.fecha_ingreso | date }}</td>
           <td class="table-cell-class hidden md:table-cell">{{ ingreso.descripcion_ingreso }}</td>
-          <td class="table-cell-class text-center"> <span class="bg-gray-300 rounded-full px-2 py-1 text-xs font-bold">{{
-              ingreso.categoria }}</span></td>
+          <td class="table-cell-class text-center"> <span
+              class="bg-gray-300 rounded-full px-2 py-1 text-xs font-bold">{{
+              ingreso.categoria.descripcion }}</span></td>
           <td class="table-cell-class text-center">
             <ng-container *ngIf="ingreso.transferencia">
               <fa-icon [icon]="faCreditCard" class="h-4 w-4 text-blue-500"></fa-icon>
@@ -60,8 +63,7 @@
             </ng-template>
           </td>
           <td class="table-cell-class text-center">
-            <button
-              class="bg-gray-100 px-2 py-1 rounded">
+            <button class="bg-gray-100 px-2 py-1 rounded">
               <fa-icon [icon]="faEye" class="text-sm"></fa-icon>
               Ver</button>
           </td>
@@ -74,8 +76,10 @@
         Mostrando {{ ingresosEnPagina.length }} de {{ ingresosFiltrados.length }} ingresos
       </div>
       <div class="space-x-2">
-        <button (click)="cambiarPaginaAnterior()" [disabled]="deshabilitarAnterior" class="bg-gray-300 px-4 py-2 rounded">Anterior</button>
-        <button (click)="cambiarPaginaSiguiente()" [disabled]="deshabilitarSiguiente" class="bg-gray-300 px-4 py-2 rounded">Siguiente</button>
+        <button (click)="cambiarPaginaAnterior()" [disabled]="deshabilitarAnterior"
+          class="bg-gray-300 px-4 py-2 rounded">Anterior</button>
+        <button (click)="cambiarPaginaSiguiente()" [disabled]="deshabilitarSiguiente"
+          class="bg-gray-300 px-4 py-2 rounded">Siguiente</button>
 
       </div>
     </div>

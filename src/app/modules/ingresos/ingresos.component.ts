@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
-import { faCreditCard, faMoneyBill1, faEye, faCalendarDay } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCreditCard,
+  faMoneyBill1,
+  faEye,
+  faCalendarDay,
+} from '@fortawesome/free-solid-svg-icons';
 import { GeneralService } from '../../service/general.service';
 import { Ingreso } from '../../models/ingreso.model';
 
@@ -8,11 +13,10 @@ import { Ingreso } from '../../models/ingreso.model';
   selector: 'app-ingresos',
   templateUrl: './ingresos.component.html',
   styleUrls: ['./ingresos.component.css'],
-  providers: [CurrencyPipe]
+  providers: [CurrencyPipe],
 })
 export class IngresosComponent implements OnInit {
-
-  constructor(private generalService: GeneralService) { }
+  constructor(private generalService: GeneralService) {}
 
   busqueda: string = '';
   paginaActual: number = 1;
@@ -24,6 +28,9 @@ export class IngresosComponent implements OnInit {
   currentPage = 1;
   pageSize = 10;
 
+  selectedRange: { startDate: Date; endDate: Date } | undefined;
+  rangoTexto: string = 'Ninguno';
+
   ngOnInit() {
     this.getIngresos();
   }
@@ -31,10 +38,37 @@ export class IngresosComponent implements OnInit {
   getIngresos() {
     this.generalService.getData('ingresos/').subscribe({
       next: (data) => {
-        this.ingresos = data.data
+        this.ingresos = data.data;
         this.updateIngresosEnPagina();
       },
-      error: (error) => console.error('Error:', error)
+      error: (error) => console.error('Error:', error),
+    });
+  }
+
+  // Método que se llama cuando se cambia el rango de fechas
+  onDateRangeChange(event: any): void {
+    const { startDate, endDate } = event;
+
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
+        this.rangoTexto = `${this.formatDate(start)} - ${this.formatDate(end)}`;
+        console.log(this.rangoTexto);
+      } else {
+        this.rangoTexto = 'Fecha inválida';
+      }
+    } else {
+      this.rangoTexto = 'Ninguno';
+    }
+  }
+
+  formatDate(date: Date): string {
+    return date.toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
     });
   }
 
@@ -44,13 +78,12 @@ export class IngresosComponent implements OnInit {
   faEye = faEye;
   faCalendarDay = faCalendarDay;
 
-
-
-
-
   updateIngresosEnPagina() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
-    this.ingresosEnPagina = this.ingresos.slice(startIndex, startIndex + this.pageSize);
+    this.ingresosEnPagina = this.ingresos.slice(
+      startIndex,
+      startIndex + this.pageSize
+    );
   }
 
   getRangoTexto(): string {
@@ -58,8 +91,11 @@ export class IngresosComponent implements OnInit {
   }
 
   get ingresosFiltrados() {
-    return this.ingresos.filter(ingreso =>
-      ingreso.descripcion_ingreso.toLowerCase().includes(this.busqueda.toLowerCase())
+    return this.ingresos.filter(
+      (ingreso) =>
+        ingreso.descripcion_ingreso
+          .toLowerCase()
+          .includes(this.busqueda.toLowerCase())
       // ingreso.categoria.toLowerCase().includes(this.busqueda.toLowerCase())
       // ingreso.ingreso_id.includes(this.busqueda.toLowerCase())
     );
@@ -75,7 +111,10 @@ export class IngresosComponent implements OnInit {
   // }
 
   get totalIngresos(): number {
-    return this.ingresos.reduce((sum, ingreso) => sum + ingreso.monto_ingreso, 0);
+    return this.ingresos.reduce(
+      (sum, ingreso) => sum + ingreso.monto_ingreso,
+      0
+    );
   }
 
   cambiarPaginaAnterior() {
@@ -101,5 +140,4 @@ export class IngresosComponent implements OnInit {
   get deshabilitarSiguiente(): boolean {
     return this.paginaActual === this.totalPaginas;
   }
-
 }
