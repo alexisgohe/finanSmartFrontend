@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './modules/login/login.component';
@@ -16,6 +16,7 @@ import { IngresosComponent } from './modules/ingresos/ingresos.component';
 import { CategoriasComponent } from './modules/categorias/categorias.component';
 import { AuthService } from './service/auth.service';
 import { GeneralService } from './service/general.service';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { GeneralService } from './service/general.service';
     HttpClientModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    CommonModule
+    CommonModule,
+    NgxDaterangepickerMd.forRoot()
   ],
   providers: [
     AuthService,
