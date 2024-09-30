@@ -1,14 +1,14 @@
 <div class="p-8 bg-gray-100 min-h-screen">
   <div class="flex justify-between items-center p-4">
     <h2 class="text-2xl font-bold">Ingresos del Usuario</h2>
-    <button class="bg-blue-500 text-white px-4 py-2 rounded flex items-center">
+    <button (click)="newIngreso()" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center">
       <span class="mr-2">+</span> Agregar Ingreso
     </button>
   </div>
 
   <div class="p-4">
     <div class="flex justify-between items-center mb-4">
-      <div class="w-[180px]">
+      <div class="w-[220px]">
         <label class="block text-sm font-medium text-gray-700">Seleccionar rango</label>
         <input type="text"
           class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
@@ -16,11 +16,6 @@
           [locale]="{ format: 'DD/MM/YYYY' }" placeholder="Seleccionar rango de fechas" />
       </div>
       <!-- [ranges]="customRanges" -->
-
-      <div class="w-[180px] flex items-center">
-        <fa-icon [icon]="faCalendarDay" class="h-4 w-4 text-gray-500 px-2"></fa-icon>
-        <span>Rango: {{ rangoTexto }}</span>
-      </div>
     </div>
 
 

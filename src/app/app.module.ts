@@ -17,6 +17,10 @@ import { CategoriasComponent } from './modules/categorias/categorias.component';
 import { AuthService } from './service/auth.service';
 import { GeneralService } from './service/general.service';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { NewingresoComponent } from './dialog/newingreso/newingreso.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -26,7 +30,8 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
       SidebarComponent,
       HeaderComponent,
       IngresosComponent,
-      CategoriasComponent
+      CategoriasComponent,
+      NewingresoComponent,
    ],
   imports: [
     BrowserModule,
@@ -36,11 +41,14 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
     ReactiveFormsModule,
     FontAwesomeModule,
     CommonModule,
-    NgxDaterangepickerMd.forRoot()
+    NgxDaterangepickerMd.forRoot(),
+    MatDialogModule,
+    MatSnackBarModule,
   ],
   providers: [
     AuthService,
     GeneralService,
+    provideAnimationsAsync(),
     // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

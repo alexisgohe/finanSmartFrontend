@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { GeneralService } from '../../service/general.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -22,8 +24,10 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
+    private generalService: GeneralService,
     private router: Router,
     private formbuilder: FormBuilder,
+    private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit() {
@@ -49,7 +53,13 @@ export class LoginComponent {
     this.authService.login(loginData).subscribe(
       (response) => {
         if (!response.error) {
-          console.log(response.message);
+          this.generalService.openSnackBar(
+            this.snackBar,
+            response.message,
+            "",
+            5000,
+            "correcto-snackbar"
+          );
 
           // Guarda el token en el localStorage a través del servicio AuthService
           this.authService.setToken(response.access);  // Guarda el token de acceso
@@ -60,6 +70,13 @@ export class LoginComponent {
       },
       (error) => {
         const errorMessage = error.error?.message || 'Error desconocido';
+        this.generalService.openSnackBar(
+          this.snackBar,
+          errorMessage,
+          "",
+          5000,
+          "error-snackbar"
+        );
         console.log(errorMessage);
       }
     );

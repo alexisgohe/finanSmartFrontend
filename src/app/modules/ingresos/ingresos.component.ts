@@ -8,6 +8,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { GeneralService } from '../../service/general.service';
 import { Ingreso } from '../../models/ingreso.model';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { NewingresoComponent } from '../../dialog/newingreso/newingreso.component';
 
 @Component({
   selector: 'app-ingresos',
@@ -16,7 +19,10 @@ import { Ingreso } from '../../models/ingreso.model';
   providers: [CurrencyPipe],
 })
 export class IngresosComponent implements OnInit {
-  constructor(private generalService: GeneralService) {}
+  constructor(private generalService: GeneralService,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar,
+  ) {}
 
   busqueda: string = '';
   paginaActual: number = 1;
@@ -139,5 +145,37 @@ export class IngresosComponent implements OnInit {
 
   get deshabilitarSiguiente(): boolean {
     return this.paginaActual === this.totalPaginas;
+  }
+
+  newIngreso(){
+    const dialogRef = this.dialog.open(NewingresoComponent , {
+      panelClass: "mat-dialog-custom",
+      data: {
+        respuesta: "",
+        accion: "N",
+        TituloAsigna: "Nuevo ingreso",
+      },
+    });
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.respuesta) {
+        this.generalService.openSnackBar(
+          this.snackBar,
+          "Registo insertado con exito",
+          "",
+          5000,
+          "correcto-snackbar"
+        );
+      } else {
+        this.generalService.openSnackBar(
+          this.snackBar,
+          "No se realizó la inserción del nuevo registro" + result.data,
+          "",
+          5000,
+          "mensaje-snackbar"
+        );
+      }
+    });
+
   }
 }
