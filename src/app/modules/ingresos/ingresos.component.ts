@@ -10,7 +10,7 @@ import { GeneralService } from '../../service/general.service';
 import { Ingreso } from '../../models/ingreso.model';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NewingresoComponent } from '../../dialog/newingreso/newingreso.component';
+import { IngresoDialogComponent} from '../../dialog/ingresoDialog/ingresoDialog.component';
 
 @Component({
   selector: 'app-ingresos',
@@ -19,14 +19,13 @@ import { NewingresoComponent } from '../../dialog/newingreso/newingreso.componen
   providers: [CurrencyPipe],
 })
 export class IngresosComponent implements OnInit {
-  constructor(private generalService: GeneralService,
+  constructor(
+    private generalService: GeneralService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar,
-  ) {}
+    private snackBar: MatSnackBar
+  ) { }
 
   busqueda: string = '';
-  paginaActual: number = 1;
-  ingresosPorPagina: number = 5;
   rangoVista: 'quincena' | 'mes' = 'mes';
 
   ingresos: Ingreso[] = [];
@@ -78,12 +77,6 @@ export class IngresosComponent implements OnInit {
     });
   }
 
-  // Íconos de FontAwesome
-  faCreditCard = faCreditCard;
-  faMoneyBill1 = faMoneyBill1;
-  faEye = faEye;
-  faCalendarDay = faCalendarDay;
-
   updateIngresosEnPagina() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     this.ingresosEnPagina = this.ingresos.slice(
@@ -92,29 +85,13 @@ export class IngresosComponent implements OnInit {
     );
   }
 
-  getRangoTexto(): string {
-    return this.rangoVista === 'quincena' ? 'Quincenal' : 'Mensual';
-  }
-
   get ingresosFiltrados() {
-    return this.ingresos.filter(
-      (ingreso) =>
-        ingreso.descripcion_ingreso
-          .toLowerCase()
-          .includes(this.busqueda.toLowerCase())
-      // ingreso.categoria.toLowerCase().includes(this.busqueda.toLowerCase())
-      // ingreso.ingreso_id.includes(this.busqueda.toLowerCase())
+    return this.ingresos.filter((ingreso) =>
+      ingreso.descripcion_ingreso
+        .toLowerCase()
+        .includes(this.busqueda.toLowerCase())
     );
   }
-
-  get totalPaginas(): number {
-    return Math.ceil(this.ingresosFiltrados.length / this.ingresosPorPagina);
-  }
-
-  // get ingresosEnPagina(): Ingreso[] {
-  //   const start = (this.paginaActual - 1) * this.ingresosPorPagina;
-  //   return this.ingresosFiltrados.slice(start, start + this.ingresosPorPagina);
-  // }
 
   get totalIngresos(): number {
     return this.ingresos.reduce(
@@ -123,37 +100,17 @@ export class IngresosComponent implements OnInit {
     );
   }
 
-  cambiarPaginaAnterior() {
-    if (this.paginaActual > 1) {
-      this.paginaActual--;
-    }
-  }
-
-  cambiarPaginaSiguiente() {
-    if (this.paginaActual < this.totalPaginas) {
-      this.paginaActual++;
-    }
-  }
-
   trackById(index: number, ingreso: Ingreso): number {
     return ingreso.ingreso_id;
   }
 
-  get deshabilitarAnterior(): boolean {
-    return this.paginaActual === 1;
-  }
-
-  get deshabilitarSiguiente(): boolean {
-    return this.paginaActual === this.totalPaginas;
-  }
-
-  newIngreso(){
-    const dialogRef = this.dialog.open(NewingresoComponent , {
-      panelClass: "mat-dialog-custom",
+  nuevaCategoria() {
+    const dialogRef = this.dialog.open(IngresoDialogComponent, {
+      panelClass: 'mat-dialog-custom',
       data: {
-        respuesta: "",
-        accion: "N",
-        TituloAsigna: "Nuevo ingreso",
+        respuesta: '',
+        accion: 'N',
+        TituloAsigna: 'Agregar Nuevo Ingreso',
       },
     });
     dialogRef.disableClose = true;
@@ -161,21 +118,26 @@ export class IngresosComponent implements OnInit {
       if (result.respuesta) {
         this.generalService.openSnackBar(
           this.snackBar,
-          "Registo insertado con exito",
-          "",
+          'Registo insertado con exito',
+          '',
           5000,
-          "correcto-snackbar"
+          'correcto-snackbar'
         );
       } else {
         this.generalService.openSnackBar(
           this.snackBar,
-          "No se realizó la inserción del nuevo registro" + result.data,
-          "",
+          'No se realizó la inserción del nuevo registro' + result.data,
+          '',
           5000,
-          "mensaje-snackbar"
+          'mensaje-snackbar'
         );
       }
     });
-
   }
+
+  // Íconos de FontAwesome
+  faCreditCard = faCreditCard;
+  faMoneyBill1 = faMoneyBill1;
+  faEye = faEye;
+  faCalendarDay = faCalendarDay;
 }

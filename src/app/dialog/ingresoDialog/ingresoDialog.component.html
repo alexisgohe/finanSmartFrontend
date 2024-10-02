@@ -1,0 +1,61 @@
+<div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70 z-50">
+  <div class="bg-white rounded-xl shadow-xl max-w-lg w-full p-8">
+    <h2 class="text-2xl font-semibold text-gray-700 mb-6">{{ data.TituloAsigna }}</h2>
+    <p class="text-gray-500 mb-6">
+      Complete los detalles del nuevo ingreso aquí. Haga clic en guardar cuando termine.
+    </p>
+
+    <form [formGroup]="ingresoForm" (ngSubmit)="onSubmit()">
+      <div class="grid gap-6">
+
+        <div class="grid grid-cols-4 gap-4 items-center">
+          <label for="monto" class="text-right text-gray-600">Monto</label>
+          <input id="monto" type="number" formControlName="monto" placeholder="0.00" step="0.01" min="0"
+            class="col-span-3 border border-gray-300 rounded-lg px-3 py-2 focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        </div>
+
+        <div class="grid grid-cols-4 gap-4 items-center">
+          <label for="fecha" class="text-right text-gray-600">Fecha</label>
+          <input id="fecha" type="date" formControlName="fecha" (change)="seleccionarFecha($event)"
+            class="col-span-3 border border-gray-300 rounded-lg px-3 py-2 focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        </div>
+
+        <div class="grid grid-cols-4 gap-4 items-center">
+          <label for="descripcion" class="text-right text-gray-600">Descripción</label>
+          <input id="descripcion" type="text" formControlName="descripcion" placeholder="Descripción del ingreso"
+            class="col-span-3 border border-gray-300 rounded-lg px-3 py-2 focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        </div>
+
+        <div class="grid grid-cols-4 gap-4 items-center">
+          <label for="categoria" class="text-right text-gray-600">Categoría</label>
+          <select id="categoria" formControlName="categoria" class="col-span-3 border border-gray-300 rounded-lg px-3 py-2 focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm">
+            <option value="" disabled selected>Seleccione una categoría</option>
+            <option value="salario">Salario</option>
+            <option value="ventas">Ventas</option>
+            <option value="inversiones">Inversiones</option>
+            <option value="otros">Otros</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-4 gap-4 items-center">
+          <label for="metodoPago" class="text-right text-gray-600">Método de Pago</label>
+          <select id="metodoPago" formControlName="metodoPago" class="col-span-3 border border-gray-300 rounded-lg px-3 py-2 focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm">
+            <option value="" disabled selected>Seleccione el método de pago</option>
+            <option value="efectivo">Efectivo</option>
+            <option value="tarjeta">Tarjeta</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="flex justify-end mt-8">
+        <button type="submit" class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-all shadow">
+          Guardar Ingreso
+        </button>
+        <button type="button" (click)="cancelar()" class="ml-4 bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-500 transition-all shadow">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

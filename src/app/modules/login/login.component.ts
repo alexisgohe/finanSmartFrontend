@@ -58,7 +58,7 @@ export class LoginComponent {
             response.message,
             "",
             5000,
-            "correcto-snackbar"
+            "success-snackbar"
           );
 
           // Guarda el token en el localStorage a través del servicio AuthService
@@ -74,10 +74,9 @@ export class LoginComponent {
           this.snackBar,
           errorMessage,
           "",
-          5000,
+          10000,
           "error-snackbar"
         );
-        console.log(errorMessage);
       }
     );
   }
