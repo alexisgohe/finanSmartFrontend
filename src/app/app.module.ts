@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './modules/login/login.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './guards/auth.interceptor';
 import { SidebarComponent } from './core/sidebar/sidebar.component';
@@ -17,22 +17,27 @@ import { CategoriasComponent } from './modules/categorias/categorias.component';
 import { AuthService } from './service/auth.service';
 import { GeneralService } from './service/general.service';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-import { NewingresoComponent } from './dialog/newingreso/newingreso.component';
+import { IngresoDialogComponent } from './dialog/ingresoDialog/ingresoDialog.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CategoriaDialogComponent } from './dialog/categoriaDialog/categoriaDialog.component';
+import { CategoriasPipe } from './pipes/categorias.pipe';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
   declarations: [
     AppComponent,
-      LoginComponent,
-      DashboardComponent,
-      SidebarComponent,
-      HeaderComponent,
-      IngresosComponent,
-      CategoriasComponent,
-      NewingresoComponent,
-   ],
+    LoginComponent,
+    DashboardComponent,
+    SidebarComponent,
+    HeaderComponent,
+    IngresosComponent,
+    CategoriasComponent,
+    IngresoDialogComponent,
+    CategoriaDialogComponent,
+    CategoriasPipe
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -43,7 +48,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     CommonModule,
     NgxDaterangepickerMd.forRoot(),
     MatDialogModule,
-    MatSnackBarModule,
+    MatSnackBarModule
   ],
   providers: [
     AuthService,
@@ -53,4 +58,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(library: FaIconLibrary) {
+    library.addIconPacks(fas)
+  }
+}

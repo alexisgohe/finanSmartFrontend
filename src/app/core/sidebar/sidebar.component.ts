@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { faGaugeHigh, faWallet, faMoneyBill, faTableList } from '@fortawesome/free-solid-svg-icons';
+import { faGaugeHigh, faWallet, faMoneyBill, faTableList, faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar',
@@ -23,7 +23,8 @@ export class SidebarComponent implements OnInit {
     { label: 'Dashboard', icon: faGaugeHigh, url:'dashboard' },
     { label: 'Ingresos', icon: faWallet, url:'ingresos' },
     { label: 'Gastos', icon: faMoneyBill, url:'gastos' },
-    { label: 'Categorías', icon: faTableList, url:'categorias' }
+    { label: 'Categorías', icon: faTableList, url:'categorias' },
+    { label: 'Transferencias', icon: faArrowUpFromBracket, url:'transferencias' }
   ];
 
   navigation(url: any){

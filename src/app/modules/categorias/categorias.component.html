@@ -1,3 +1,55 @@
-<p>
-  categorias works!
-</p>
+<div class="p-8 bg-gray-50 min-h-screen">
+  <div class="flex justify-between items-center p-4 border-b border-gray-200">
+    <h2 class="text-2xl font-bold text-gray-700">Categorías</h2>
+    <button (click)="nuevaCategoria()" class="bg-gray-800 text-white px-5 py-2 rounded-lg hover:bg-gray-700 transition-all flex items-center shadow">
+      <span class="mr-2">+</span> Agregar Categoría
+    </button>
+  </div>
+
+  <div class="p-4">
+    <div class="flex justify-between items-center mb-6">
+      <div class="flex items-center space-x-3">
+        <input [(ngModel)]="busqueda" placeholder="Buscar categorías..." class="px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+      </div>
+    </div>
+
+    <table class="min-w-full table-auto mb-6 border-collapse shadow-sm">
+      <thead>
+        <tr class="bg-gray-100 border-b">
+          <th class="px-4 py-3 text-center text-gray-600 font-semibold">ID</th>
+          <th class="px-4 py-3 text-center text-gray-600 font-semibold">Icono</th>
+          <th class="px-4 py-3 text-center text-gray-600 font-semibold">Descripción</th>
+          <th class="px-4 py-3 text-center text-gray-600 font-semibold">Tipo</th>
+          <th class="px-4 py-3 text-center text-gray-600 font-semibold">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let categoria of categoriasFiltradas" class="border-b hover:bg-gray-50 transition-all">
+          <td class="px-4 py-2 text-center border-t border-gray-200">{{ categoria.categoria_id }}</td>
+          <td class="px-4 py-2 text-center border-t border-gray-200">
+            <fa-icon [icon]="getIcon(categoria.img)"></fa-icon>
+          </td>
+          <td class="px-4 py-2 text-center border-t border-gray-200">{{ categoria.descripcion }}</td>
+          <td class="px-4 py-2 text-center border-t border-gray-200">{{ categoria.tipo | CategoriasPipe }}</td>
+          <td class="px-4 py-2 text-center border-t border-gray-200">
+            <button (click)="eliminarCategoria(categoria.categoria_id)" class="text-gray-400 hover:text-red-500 transition-all">
+              <fa-icon [icon]="faTrash" class="text-sm"></fa-icon>
+            </button>
+            <button (click)="editarCategoria(categoria)" class="text-gray-400 hover:text-blue-500 transition-all ml-2">
+              <fa-icon [icon]="faPenToSquare" class="text-sm"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="flex justify-between items-center">
+      <div class="text-sm text-gray-500">
+        Mostrando {{ categoriasFiltradas.length }} de {{ categorias.length }} categorías
+      </div>
+      <div class="space-x-2">
+        <!-- Botones de paginación si es necesario -->
+      </div>
+    </div>
+  </div>
+</div>
