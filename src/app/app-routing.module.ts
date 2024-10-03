@@ -7,6 +7,8 @@ import { IngresosComponent } from './modules/ingresos/ingresos.component';
 import { GastosComponent } from './modules/gastos/gastos.component';
 import { CategoriasComponent } from './modules/categorias/categorias.component';
 import { TransferenciasComponent } from './modules/transferencias/transferencias.component';
+import { TarjetaCreditoComponent } from './modules/tarjetaCredito/tarjetaCredito.component';
+import { TarjetaDebitoComponent } from './modules/tarjetaDebito/tarjetaDebito.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -15,6 +17,8 @@ const routes: Routes = [
   { path: 'gastos', component: GastosComponent, canActivate: [AuthGuard] },
   { path: 'categorias', component: CategoriasComponent, canActivate: [AuthGuard] },
   { path: 'transferencias', component: TransferenciasComponent, canActivate: [AuthGuard] },
+  { path: 'debito', component: TarjetaDebitoComponent, canActivate: [AuthGuard] },
+  { path: 'credito', component: TarjetaCreditoComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' } // Redirigir al login por defecto
 ];
 
