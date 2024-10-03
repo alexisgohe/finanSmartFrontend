@@ -23,7 +23,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CategoriaDialogComponent } from './dialog/categoriaDialog/categoriaDialog.component';
 import { CategoriasPipe } from './pipes/categorias.pipe';
-import { fas } from '@fortawesome/free-solid-svg-icons';
+import { TarjetaCreditoComponent } from './modules/tarjetaCredito/tarjetaCredito.component';
+import { TarjetaDebitoComponent } from './modules/tarjetaDebito/tarjetaDebito.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,9 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
     CategoriasComponent,
     IngresoDialogComponent,
     CategoriaDialogComponent,
-    CategoriasPipe
+    CategoriasPipe,
+    TarjetaCreditoComponent,
+    TarjetaDebitoComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,4 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(library: FaIconLibrary) {
-    library.addIconPacks(fas)
-  }
 }

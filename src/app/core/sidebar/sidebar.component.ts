@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { faGaugeHigh, faWallet, faMoneyBill, faTableList, faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faGaugeHigh, faWallet, faMoneyBill1, faTableList, faArrowUpFromBracket, faCreditCard, faBuildingColumns } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar',
@@ -22,9 +22,11 @@ export class SidebarComponent implements OnInit {
   menuItems = [
     { label: 'Dashboard', icon: faGaugeHigh, url:'dashboard' },
     { label: 'Ingresos', icon: faWallet, url:'ingresos' },
-    { label: 'Gastos', icon: faMoneyBill, url:'gastos' },
+    { label: 'Gastos', icon: faMoneyBill1, url:'gastos' },
     { label: 'Categorías', icon: faTableList, url:'categorias' },
-    { label: 'Transferencias', icon: faArrowUpFromBracket, url:'transferencias' }
+    { label: 'Transferencias', icon: faArrowUpFromBracket, url:'transferencias' },
+    { label: 'Tarjeta Débito', icon: faCreditCard, url:'debito' },
+    { label: 'Tarjeta Crédito', icon: faBuildingColumns, url:'credito' },
   ];
 
   navigation(url: any){

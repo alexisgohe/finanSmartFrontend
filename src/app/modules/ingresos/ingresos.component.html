@@ -1,7 +1,8 @@
 <div class="p-8 bg-gray-50 min-h-screen">
   <div class="flex justify-between items-center p-4">
     <h2 class="text-2xl font-bold text-gray-700">Ingresos</h2>
-    <button (click)="nuevaCategoria()" class="bg-gray-800 text-white px-5 py-2 rounded-lg hover:bg-gray-700 transition-all flex items-center shadow">
+    <button (click)="nuevaCategoria()"
+      class="bg-gray-800 text-white px-5 py-2 rounded-lg hover:bg-gray-700 transition-all flex items-center shadow">
       <span class="mr-2">+</span> Agregar Ingreso
     </button>
   </div>
@@ -33,16 +34,17 @@
           <th class="px-4 py-2 text-center text-gray-600">ID</th>
           <th class="px-4 py-2 text-center text-gray-600">Monto</th>
           <th class="px-4 py-2 text-center text-gray-600">Fecha</th>
-          <th class="px-4 py-2 text-center text-gray-600 hidden md:table-cell">Descripción</th>
+          <th class="px-4 py-2 text-center text-gray-600">Descripción</th>
           <th class="px-4 py-2 text-center text-gray-600">Categoría</th>
           <th class="px-4 py-2 text-center text-gray-600">Método</th>
-          <th class="px-4 py-2 text-center text-gray-600">Acciones</th>
+          <th class="px-4 py-2 text-center text-gray-600">Editar</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let ingreso of ingresosEnPagina; trackBy: trackById">
           <td class="px-4 py-2 text-center border-t border-gray-200">{{ ingreso.ingreso_id }}</td>
-          <td class="px-4 py-2 text-center border-t border-gray-200">{{ ingreso.monto_ingreso | currency:'USD':'symbol':'1.2-2' }}</td>
+          <td class="px-4 py-2 text-center border-t border-gray-200">{{ ingreso.monto_ingreso |
+            currency:'USD':'symbol':'1.2-2' }}</td>
           <td class="px-4 py-2 text-center border-t border-gray-200">{{ ingreso.fecha_ingreso | date }}</td>
           <td class="px-4 py-2 text-center border-t border-gray-200">{{ ingreso.descripcion_ingreso }}</td>
           <td class="px-4 py-2 text-center border-t border-gray-200">
@@ -59,8 +61,7 @@
           </td>
           <td class="px-4 py-2 text-center border-t border-gray-200">
             <button class="bg-gray-100 px-3 py-1 rounded-lg transition-all hover:bg-gray-200">
-              <fa-icon [icon]="faEye" class="text-sm"></fa-icon>
-              Ver
+              <fa-icon [icon]="faPenToSquare" class="text-sm"></fa-icon>
             </button>
           </td>
         </tr>

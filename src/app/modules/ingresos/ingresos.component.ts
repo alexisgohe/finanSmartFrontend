@@ -3,7 +3,7 @@ import { CurrencyPipe } from '@angular/common';
 import {
   faCreditCard,
   faMoneyBill1,
-  faEye,
+  faPenToSquare,
   faCalendarDay,
 } from '@fortawesome/free-solid-svg-icons';
 import { GeneralService } from '../../service/general.service';
@@ -138,6 +138,6 @@ export class IngresosComponent implements OnInit {
   // Íconos de FontAwesome
   faCreditCard = faCreditCard;
   faMoneyBill1 = faMoneyBill1;
-  faEye = faEye;
+  faPenToSquare = faPenToSquare;
   faCalendarDay = faCalendarDay;
 }
