@@ -5,6 +5,7 @@ import {
   faMoneyBill1,
   faPenToSquare,
   faCalendarDay,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { GeneralService } from '../../service/general.service';
 import { Ingreso } from '../../models/ingreso.model';
@@ -140,4 +141,5 @@ export class IngresosComponent implements OnInit {
   faMoneyBill1 = faMoneyBill1;
   faPenToSquare = faPenToSquare;
   faCalendarDay = faCalendarDay;
+  faTrash = faTrash;
 }
