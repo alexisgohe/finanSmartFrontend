@@ -9,4 +9,5 @@ export interface TarjetaCredito {
   fecha_corte: string;
   fecha_pago: string;
   usuario: Usuario;
+  numero_tarjeta: string;
 }

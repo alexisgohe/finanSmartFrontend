@@ -24,7 +24,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CategoriaDialogComponent } from './dialog/categoriaDialog/categoriaDialog.component';
 import { CategoriasPipe } from './pipes/categorias.pipe';
 import { TarjetaCreditoComponent } from './modules/tarjetaCredito/tarjetaCredito.component';
+import { TarjetaCreditoItemComponent } from './item/tarjetaCreditoItem/tarjetaCreditoItem.component';
+import { TarjetaCreditoDialogComponent } from './dialog/tarjetaCreditoDialog/tarjetaCreditoDialog.component';
 import { TarjetaDebitoComponent } from './modules/tarjetaDebito/tarjetaDebito.component';
+import { CurrencyPipe } from '@angular/common';
+import { TarjetaDebitoDialogComponent } from './dialog/tarjetaDebitoDialog/tarjetaDebitoDialog.component';
+import { TarjetaDebitoItemComponent } from './item/tarjetaDebitoItem/tarjetaDebitoItem.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +44,11 @@ import { TarjetaDebitoComponent } from './modules/tarjetaDebito/tarjetaDebito.co
     CategoriaDialogComponent,
     CategoriasPipe,
     TarjetaCreditoComponent,
-    TarjetaDebitoComponent
+    TarjetaCreditoItemComponent,
+    TarjetaCreditoDialogComponent,
+    TarjetaDebitoComponent,
+    TarjetaDebitoDialogComponent,
+    TarjetaDebitoItemComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +60,8 @@ import { TarjetaDebitoComponent } from './modules/tarjetaDebito/tarjetaDebito.co
     CommonModule,
     NgxDaterangepickerMd.forRoot(),
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    CurrencyPipe
   ],
   providers: [
     AuthService,
