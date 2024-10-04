@@ -9,4 +9,5 @@ export interface TarjetaDebito {
   fecha_inicio: string;
   fecha_fin: string;
   usuario: Usuario;
+  numero_tarjeta: string;
 }

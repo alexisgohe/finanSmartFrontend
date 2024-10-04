@@ -1,0 +1,67 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-4">{{ data.TituloAsigna }}</h1>
+  <div class="grid md:grid-cols-2 gap-6">
+
+    <!-- Tarjeta Visual -->
+    <div>
+      <div
+        class="h-1/2 flex flex-col justify-between border rounded-lg shadow-sm p-6 bg-gradient-to-r from-blue-400 to-blue-600 text-white">
+        <div class="mb-4">
+          <h2 class="text-xl font-semibold">{{ tarjetaForm.value.banco_tarjeta || 'BANCO' }}</h2>
+        </div>
+        <div class="mb-4">
+          <p class="font-mono text-lg">{{ tarjetaForm.value.numero_tarjeta || '**** **** **** ****' }}</p>
+        </div>
+        <div class="flex justify-between">
+          <div>
+            <p class="text-xs">DESCRIPCION</p>
+            <p>{{ tarjetaForm.value.nombre || 'DESCRIPCION DE LA CUENTA' }}</p>
+          </div>
+          <div>
+            <p class="text-xs">FECHA CORTE</p>
+            <p>{{ tarjetaForm.value.fecha_corte || 'MM/AA' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario de Registro -->
+    <form [formGroup]="tarjetaForm" class="space-y-4">
+      <div>
+        <label for="nombre" class="block">Descripción de Tarjeta</label>
+        <input id="nombre" formControlName="nombre" type="text" class="w-full" required>
+      </div>
+      <div>
+        <label for="banco_tarjeta" class="block">Banco</label>
+        <input id="banco_tarjeta" formControlName="banco_tarjeta" type="text" class="w-full" required>
+      </div>
+      <div>
+        <label for="numero_tarjeta" class="block">Número de Tarjeta</label>
+        <input id="numero_tarjeta" formControlName="numero_tarjeta" type="text" class="w-full" maxlength="16" required>
+      </div>
+      <div>
+        <label for="limite_credito" class="block">Límite de Crédito</label>
+        <input id="limite_credito" formControlName="limite_credito" type="number" class="w-full" required>
+      </div>
+      <div>
+        <label for="credito_utilizado" class="block">Crédito Utilizado</label>
+        <input id="credito_utilizado" formControlName="credito_utilizado" type="number" class="w-full" required>
+      </div>
+      <div>
+        <label for="fecha_corte" class="block">Fecha de Corte</label>
+        <input id="fecha_corte" formControlName="fecha_corte" type="date" class="w-full" required>
+      </div>
+      <div>
+        <label for="fecha_pago" class="block">Fecha de Pago</label>
+        <input id="fecha_pago" formControlName="fecha_pago" type="date" class="w-full" required>
+      </div>
+      <div class="flex justify-between">
+        <button (click)="onSubmit()"
+          class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-all shadow">Guardar</button>
+        <button (click)="cancelar()"
+          class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-500 transition-all shadow">Cerrar</button>
+      </div>
+    </form>
+
+  </div>
+</div>
