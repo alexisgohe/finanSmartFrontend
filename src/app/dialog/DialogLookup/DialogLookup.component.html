@@ -1,0 +1,28 @@
+<div class="p-6 max-w-lg mx-auto bg-white rounded-xl shadow-lg space-y-4">
+  <h2 class="text-xl font-bold">{{ data.titulo }}</h2>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full table-auto border-collapse">
+      <thead>
+        <tr>
+          <th *ngFor="let columna of columnas" class="px-4 py-2 text-left border-b">
+            {{ columna.header }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let fila of DatosList" class="cursor-pointer hover:bg-gray-200">
+          <td *ngFor="let columna of columnas" (dblclick)="onOkClick(fila)" class="px-4 py-2 border-b">
+            {{ fila[columna.field] }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-4">
+    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="cerrarDialogo()">
+      Cancelar
+    </button>
+  </div>
+</div>

@@ -16,13 +16,13 @@
           ngxDaterangepickerMd [(ngModel)]="selectedRange" (change)="onDateRangeChange($event)"
           [locale]="{ format: 'DD/MM/YYYY' }" placeholder="Seleccionar rango de fechas" />
       </div>
-    </div>
-
-    <div class="flex justify-between items-center mb-4">
       <div class="flex items-center space-x-2">
         <input [(ngModel)]="busqueda" placeholder="Buscar ingresos..."
           class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-gray-200 max-w-sm transition-all" />
       </div>
+    </div>
+
+    <div class="flex justify-between items-center mb-4">
       <div class="text-sm font-medium text-gray-600">
         Total de ingresos: {{ totalIngresos | currency:'USD':'symbol':'1.2-2' }}
       </div>

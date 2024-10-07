@@ -117,6 +117,7 @@ export class IngresosComponent implements OnInit {
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe((result) => {
       if (result.respuesta) {
+        this.getIngresos()
         this.generalService.openSnackBar(
           this.snackBar,
           'Registo insertado con exito',

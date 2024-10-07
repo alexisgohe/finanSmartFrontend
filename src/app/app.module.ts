@@ -30,6 +30,7 @@ import { TarjetaDebitoComponent } from './modules/tarjetaDebito/tarjetaDebito.co
 import { CurrencyPipe } from '@angular/common';
 import { TarjetaDebitoDialogComponent } from './dialog/tarjetaDebitoDialog/tarjetaDebitoDialog.component';
 import { TarjetaDebitoItemComponent } from './item/tarjetaDebitoItem/tarjetaDebitoItem.component';
+import { DialogLookupComponent } from './dialog/DialogLookup/DialogLookup.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { TarjetaDebitoItemComponent } from './item/tarjetaDebitoItem/tarjetaDebi
     TarjetaCreditoDialogComponent,
     TarjetaDebitoComponent,
     TarjetaDebitoDialogComponent,
-    TarjetaDebitoItemComponent
+    TarjetaDebitoItemComponent,
+    DialogLookupComponent,
   ],
   imports: [
     BrowserModule,
