@@ -51,7 +51,7 @@ export class IngresoDialogComponent {
     this.userId = this.generalService.usuarioId();
 
     this.ingresoForm = this.fb.group({
-      monto_ingreso: [0, [Validators.required, Validators.min(0)]],
+      monto_ingreso: ['', [Validators.required, Validators.min(0)]],
       fecha_ingreso: ['', Validators.required],
       descripcion_ingreso: ['', Validators.required],
       categoria_id: ['', Validators.required],
