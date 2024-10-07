@@ -1,18 +1,18 @@
-<div class="p-6 max-w-lg mx-auto bg-white rounded-xl shadow-lg space-y-4">
-  <h2 class="text-xl font-bold">{{ data.titulo }}</h2>
+<div class="p-6 mx-auto bg-white rounded-lg shadow-lg">
+  <h2 class="text-2xl font-semibold text-gray-700 mb-6">{{ data.titulo }}</h2>
 
   <div class="overflow-x-auto">
-    <table class="min-w-full table-auto border-collapse">
+    <table class="min-w-full table-auto border border-gray-200 rounded-lg overflow-hidden">
       <thead>
-        <tr>
-          <th *ngFor="let columna of columnas" class="px-4 py-2 text-left border-b">
+        <tr class="bg-gray-100">
+          <th *ngFor="let columna of columnas" class="px-4 py-2 text-left text-gray-600 font-medium border-b">
             {{ columna.header }}
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let fila of DatosList" class="cursor-pointer hover:bg-gray-200">
-          <td *ngFor="let columna of columnas" (dblclick)="onOkClick(fila)" class="px-4 py-2 border-b">
+        <tr *ngFor="let fila of DatosList" class="cursor-pointer hover:bg-gray-200 transition duration-150 ease-in-out">
+          <td *ngFor="let columna of columnas" (dblclick)="onOkClick(fila)" class="px-4 py-2 border-b text-gray-700">
             {{ fila[columna.field] }}
           </td>
         </tr>
@@ -20,8 +20,8 @@
     </table>
   </div>
 
-  <div class="mt-4">
-    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="cerrarDialogo()">
+  <div class="mt-4 flex justify-end">
+    <button class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition duration-150 ease-in-out" (click)="cerrarDialogo()">
       Cancelar
     </button>
   </div>

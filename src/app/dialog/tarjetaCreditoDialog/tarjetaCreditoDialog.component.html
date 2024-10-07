@@ -26,36 +26,71 @@
     </div>
 
     <!-- Formulario de Registro -->
-    <form [formGroup]="tarjetaForm" class="space-y-4">
-      <div>
-        <label for="nombre" class="block">Descripción de Tarjeta</label>
-        <input id="nombre" formControlName="nombre" type="text" class="w-full" required>
+    <form [formGroup]="tarjetaForm" class="space-y-5 pr-6 pl-6 rounded-lg">
+      <div class="relative">
+        <input id="nombre" formControlName="nombre" type="text" placeholder=" " required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="nombre"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          Descripción de Tarjeta
+        </label>
       </div>
-      <div>
-        <label for="banco_tarjeta" class="block">Banco</label>
-        <input id="banco_tarjeta" formControlName="banco_tarjeta" type="text" class="w-full" required>
+
+      <div class="relative">
+        <input id="banco_tarjeta" formControlName="banco_tarjeta" type="text" placeholder=" " required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="banco_tarjeta"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          Banco
+        </label>
       </div>
-      <div>
-        <label for="numero_tarjeta" class="block">Número de Tarjeta</label>
-        <input id="numero_tarjeta" formControlName="numero_tarjeta" type="text" class="w-full" maxlength="16" required>
+
+      <div class="relative">
+        <input id="numero_tarjeta" formControlName="numero_tarjeta" type="text" maxlength="16" placeholder=" " required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="numero_tarjeta"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          Número de Tarjeta
+        </label>
       </div>
-      <div>
-        <label for="limite_credito" class="block">Límite de Crédito</label>
-        <input id="limite_credito" formControlName="limite_credito" type="number" class="w-full" required>
+
+      <div class="relative">
+        <input id="limite_credito" formControlName="limite_credito" type="number" placeholder=" " required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="limite_credito"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          Límite de Crédito
+        </label>
       </div>
-      <div>
-        <label for="credito_utilizado" class="block">Crédito Utilizado</label>
-        <input id="credito_utilizado" formControlName="credito_utilizado" type="number" class="w-full" required>
+
+      <div class="relative">
+        <input id="credito_utilizado" formControlName="credito_utilizado" type="number" placeholder=" " required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="credito_utilizado"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          Crédito Utilizado
+        </label>
       </div>
-      <div>
-        <label for="fecha_corte" class="block">Fecha de Corte</label>
-        <input id="fecha_corte" formControlName="fecha_corte" type="date" class="w-full" required>
+
+      <div class="relative">
+        <input id="fecha_corte" formControlName="fecha_corte" type="date" placeholder=" " required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="fecha_corte"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          Fecha de Corte
+        </label>
       </div>
-      <div>
-        <label for="fecha_pago" class="block">Fecha de Pago</label>
-        <input id="fecha_pago" formControlName="fecha_pago" type="date" class="w-full" required>
+
+      <div class="relative">
+        <input id="fecha_pago" formControlName="fecha_pago" type="date" placeholder=" " required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="fecha_pago"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          Fecha de Pago
+        </label>
       </div>
-      <div class="flex justify-between">
+
+      <div class="flex justify-between mt-8">
         <button (click)="onSubmit()"
           class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-all shadow">Guardar</button>
         <button (click)="cancelar()"

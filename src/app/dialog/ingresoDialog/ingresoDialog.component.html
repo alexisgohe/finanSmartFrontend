@@ -1,60 +1,67 @@
 <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70 z-50">
-  <div class="bg-white rounded-xl shadow-xl max-w-lg w-full p-8">
-    <h2 class="text-2xl font-semibold text-gray-700 mb-6">{{ data.TituloAsigna }}</h2>
+  <div class="bg-white rounded-xl shadow-xl max-w-lg w-full p-6">
+    <h2 class="text-2xl font-semibold text-gray-700 pb-6">{{ data.TituloAsigna }}</h2>
     <p class="text-gray-500 mb-6">
       Complete los detalles del nuevo ingreso aquí. Haga clic en guardar cuando termine.
     </p>
 
-    <form [formGroup]="ingresoForm" (ngSubmit)="onSubmit()">
-      <div class="flex flex-col gap-6">
+    <form [formGroup]="ingresoForm" (ngSubmit)="onSubmit()" class="bg-white rounded-lg space-y-6">
+      <div class="relative">
+        <input id="monto_ingreso" type="number" formControlName="monto_ingreso" placeholder=" " step="0.01" min="0" required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="monto_ingreso"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          Monto
+        </label>
+      </div>
 
-        <div class="flex items-center gap-4">
-          <label for="monto_ingreso" class="text-right text-gray-600 w-1/4">Monto</label>
-          <input id="monto_ingreso" type="number" formControlName="monto_ingreso" placeholder="0.00" step="0.01" min="0"
-            class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
-        </div>
+      <div class="relative">
+        <input id="fecha_ingreso" type="date" formControlName="fecha_ingreso" (change)="seleccionarFecha($event)" placeholder=" " required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="fecha_ingreso"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          Fecha
+        </label>
+      </div>
 
-        <div class="flex items-center gap-4">
-          <label for="fecha_ingreso" class="text-right text-gray-600 w-1/4">Fecha</label>
-          <input id="fecha_ingreso" type="date" formControlName="fecha_ingreso" (change)="seleccionarFecha($event)"
-            class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
-        </div>
+      <div class="relative">
+        <input id="descripcion_ingreso" type="text" formControlName="descripcion_ingreso" placeholder=" " required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="descripcion_ingreso"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          Descripción
+        </label>
+      </div>
 
-        <div class="flex items-center gap-4">
-          <label for="descripcion_ingreso" class="text-right text-gray-600 w-1/4">Descripción</label>
-          <input id="descripcion_ingreso" type="text" formControlName="descripcion_ingreso"
-            placeholder="Descripción del ingreso"
-            class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
-        </div>
+      <div class="relative flex items-center gap-2">
+        <input id="categoria_id" type="text" placeholder=" " [value]="nombreCategoria" disabled required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="categoria_id"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          Categoría
+        </label>
+        <fa-icon [icon]="faMagnifyingGlass" class="text-sm cursor-pointer" (click)="Lookup('Categorias')"></fa-icon>
+      </div>
 
-        <div class="flex items-center gap-4">
-          <label for="categoria_id" class="text-right text-gray-600 w-1/4">Categoría</label>
-          <input id="categoria_id" type="text" placeholder="Categoría" [value]="nombreCategoria" readonly="false"
-            class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
-          <fa-icon [icon]="faMagnifyingGlass" class="text-sm cursor-pointer" (click)="Lookup('Categorias')"></fa-icon>
-        </div>
-
-        <div class="flex items-center gap-4">
-          <label for="cuenta_destino_debito" class="text-right text-gray-600 w-1/4">Tarjeta destino</label>
-          <input id="cuenta_destino_debito" type="text" placeholder="Tarjeta Destino" [value]="nombreCuenta"
-            readonly="false"
-            class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
-          <fa-icon [icon]="faMagnifyingGlass" class="text-sm cursor-pointer"
-            (click)="Lookup('TarjetasDebito')"></fa-icon>
-        </div>
-
+      <div class="relative flex items-center gap-2">
+        <input id="cuenta_destino_debito" type="text" placeholder=" " [value]="nombreCuenta" disabled required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="cuenta_destino_debito"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          Tarjeta destino
+        </label>
+        <fa-icon [icon]="faMagnifyingGlass" class="text-sm cursor-pointer" (click)="Lookup('TarjetasDebito')"></fa-icon>
       </div>
 
       <div class="flex justify-end mt-8">
-        <button type="submit"
-          class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-all shadow">
+        <button type="submit" class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-all shadow">
           Guardar Ingreso
         </button>
-        <button type="button" (click)="cancelar()"
-          class="ml-4 bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-500 transition-all shadow">
+        <button type="button" (click)="cancelar()" class="ml-4 bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-500 transition-all shadow">
           Cancelar
         </button>
       </div>
     </form>
+
   </div>
 </div>

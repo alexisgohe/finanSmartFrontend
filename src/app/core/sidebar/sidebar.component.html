@@ -1,17 +1,23 @@
 <div [ngClass]="{'block': isOpen, 'hidden': !isOpen}" class="flex h-screen bg-gray-100">
   <!-- Sidebar -->
   <aside
-    class="bg-white w-64 min-h-screen flex flex-col transition-all duration-300 ease-in-out fixed lg:relative lg:translate-x-0 z-50"
+    class="bg-white w-64 min-h-screen flex flex-col transition-transform duration-300 ease-in-out fixed lg:relative lg:translate-x-0 z-50 shadow-lg"
     [ngClass]="{'-translate-x-full': !sidebarOpen, 'translate-x-0': sidebarOpen}">
-    <div class="flex items-center justify-between h-16 px-4 border-b">
-      <span class="text-xl font-bold">Finan Smart</span>
+
+    <!-- Header del Sidebar -->
+    <div class="flex items-center justify-between h-16 px-4 border-b border-gray-200">
+      <span class="text-2xl font-semibold text-gray-800">FinanSmart</span>
     </div>
+
+    <!-- Navegación -->
     <nav class="flex-1 p-4">
-      <ul class="space-y-2">
+      <ul class="space-y-4">
         <li *ngFor="let menuItem of menuItems">
-          <button (click)="navigation(menuItem.url)" class="w-full justify-start flex items-center">
-            <fa-icon class="flex mr-2 h-4 w-4" [icon]="menuItem.icon"></fa-icon>
-            {{ menuItem.label }}
+          <button
+            (click)="navigation(menuItem.url)"
+            class="w-full flex items-center justify-start space-x-2 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200 text-gray-600 hover:text-gray-900">
+            <fa-icon class="w-5 h-5" [icon]="menuItem.icon"></fa-icon>
+            <span class="text-sm font-medium">{{ menuItem.label }}</span>
           </button>
         </li>
       </ul>

@@ -1,11 +1,21 @@
-<!-- app.component.html -->
-<div class="flex h-screen">
+<div class="flex h-screen overflow-hidden">
   <!-- Sidebar, visible solo si no estamos en login -->
-  <app-sidebar *ngIf="showSidebarHeader" [isOpen]="isSidebarOpen"></app-sidebar>
-  <div class="flex flex-col w-full">
+  <app-sidebar
+    *ngIf="showSidebarHeader"
+    [isOpen]="isSidebarOpen"
+    class="fixed top-0 left-0 h-full transition-transform duration-300 transform"
+    [ngClass]="{ '-translate-x-full': !isSidebarOpen, 'translate-x-0': isSidebarOpen }">
+  </app-sidebar>
+
+  <!-- Este div es el contenedor del resto del contenido -->
+  <div
+    class="flex flex-col w-full transition-all duration-300"
+    [ngClass]="{ 'lg:ml-[16rem]': isSidebarOpen, 'ml-0': !isSidebarOpen }"> <!-- Cambiado aquí -->
     <!-- Header, visible solo si no estamos en login -->
-    <app-header *ngIf="showSidebarHeader" (toggleSidebar)="toggleSidebar()"></app-header>
-    <main>
+    <app-header *ngIf="showSidebarHeader" (toggleSidebar)="toggleSidebar()" class="sticky top-0"></app-header>
+
+    <!-- El contenido principal -->
+    <main class="flex-grow overflow-auto">
       <router-outlet></router-outlet>
     </main>
   </div>
