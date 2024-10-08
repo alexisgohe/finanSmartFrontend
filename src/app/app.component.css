@@ -1,0 +1,12 @@
+/* Estilos para la paginaci+on de la tabla */
+:host ::ng-deep .p-paginator-page,
+:host ::ng-deep .p-paginator-first,
+:host ::ng-deep .p-paginator-prev,
+:host ::ng-deep .p-paginator-next,
+:host ::ng-deep .p-paginator-last {
+  @apply text-white hover:text-gray-600 cursor-pointer px-2 py-1;
+}
+
+:host ::ng-deep .p-paginator-page.p-highlight {
+  @apply text-white bg-gray-800 hover:bg-gray-700 rounded-full px-3 py-1;
+}

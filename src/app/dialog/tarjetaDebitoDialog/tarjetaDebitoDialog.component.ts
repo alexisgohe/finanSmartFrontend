@@ -44,7 +44,7 @@ export class TarjetaDebitoDialogComponent implements OnInit {
       banco_tarjeta: ['', Validators.required],
       saldo: ['', [Validators.required, Validators.min(0)]],
       tipo: ['', Validators.required],
-      numero_tarjeta: ['', [Validators.required, Validators.maxLength(16)]],
+      numero_tarjeta: [''],
       usuario: [''],
     });
 
@@ -93,11 +93,13 @@ export class TarjetaDebitoDialogComponent implements OnInit {
         });
       }
     } else {
-      this.snackBar,
+      this.generalService.openSnackBar(
+        this.snackBar,
         'Capture los datos del formulario correctamente',
-        '',
-        5000,
-        'error-snackbar';
+        "",
+        10000,
+        "error-snackbar"
+      );
     }
   }
 

@@ -17,7 +17,7 @@
           [locale]="{ format: 'DD/MM/YYYY' }" placeholder="Seleccionar rango de fechas" />
       </div>
       <div class="flex items-center space-x-2">
-        <input [(ngModel)]="busqueda" placeholder="Buscar ingresos..."
+        <input [(ngModel)]="busqueda" (ngModelChange)="aplicarFiltrosYPaginacion()" placeholder="Buscar ingresos..."
           class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-gray-200 max-w-sm transition-all" />
       </div>
     </div>
@@ -42,7 +42,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let ingreso of ingresosEnPagina; trackBy: trackById">
+        <tr *ngFor="let ingreso of ingresosPaginadas">
           <td class="px-4 py-2 text-center border-t border-gray-200">{{ ingreso.ingreso_id }}</td>
           <td class="px-4 py-2 text-center border-t border-gray-200">{{ ingreso.monto_ingreso |
             currency:'USD':'symbol':'1.2-2' }}</td>
@@ -74,9 +74,14 @@
       </tbody>
     </table>
 
+    <div class="flex justify-center my-4">
+      <p-paginator [rows]="paginadorRows" [totalRecords]="ingresosFiltrados.length" (onPageChange)="paginate($event)"
+        styleClass="bg-white shadow-md rounded-lg p-2"></p-paginator>
+    </div>
+
     <div class="flex justify-between items-center mt-4">
       <div class="text-sm text-gray-500">
-        Mostrando {{ ingresosEnPagina.length }} de {{ ingresosFiltrados.length }} ingresos
+        Mostrando {{ ingresosFiltrados.length }} de {{ ingresos.length }} ingresos
       </div>
       <div class="space-x-2">
         <!-- <button class="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400 transition-all">Anterior</button>
