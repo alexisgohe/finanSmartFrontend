@@ -11,7 +11,7 @@ import { GeneralService } from '../../service/general.service';
 import { Ingreso } from '../../models/ingreso.model';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IngresoDialogComponent} from '../../dialog/ingresoDialog/ingresoDialog.component';
+import { IngresoDialogComponent } from '../../dialog/ingresoDialog/ingresoDialog.component';
 
 @Component({
   selector: 'app-ingresos',
@@ -24,13 +24,16 @@ export class IngresosComponent implements OnInit {
     private generalService: GeneralService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) { }
+  ) {
+    this.paginadorRows = 5;
+  }
 
   busqueda: string = '';
   rangoVista: 'quincena' | 'mes' = 'mes';
 
   ingresos: Ingreso[] = [];
-  ingresosEnPagina: Ingreso[] = [];
+  // ingresosEnPagina: Ingreso[] = [];
+  ingresosPaginadas: Ingreso[] = []
   currentPage = 1;
   pageSize = 10;
 
@@ -45,7 +48,7 @@ export class IngresosComponent implements OnInit {
     this.generalService.getData('ingresos/').subscribe({
       next: (data) => {
         this.ingresos = data.data;
-        this.updateIngresosEnPagina();
+        this.aplicarFiltrosYPaginacion();
       },
       error: (error) => console.error('Error:', error),
     });
@@ -78,31 +81,11 @@ export class IngresosComponent implements OnInit {
     });
   }
 
-  updateIngresosEnPagina() {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    this.ingresosEnPagina = this.ingresos.slice(
-      startIndex,
-      startIndex + this.pageSize
-    );
-  }
-
-  get ingresosFiltrados() {
-    return this.ingresos.filter((ingreso) =>
-      ingreso.descripcion_ingreso
-        .toLowerCase()
-        .includes(this.busqueda.toLowerCase())
-    );
-  }
-
   get totalIngresos(): number {
     return this.ingresos.reduce(
       (sum, ingreso) => sum + ingreso.monto_ingreso,
       0
     );
-  }
-
-  trackById(index: number, ingreso: Ingreso): number {
-    return ingreso.ingreso_id;
   }
 
   nuevaCategoria() {
@@ -136,6 +119,30 @@ export class IngresosComponent implements OnInit {
       }
     });
   }
+
+  get ingresosFiltrados() {
+    return this.ingresos.filter((ingreso) =>
+      ingreso.descripcion_ingreso
+        .toLowerCase()
+        .includes(this.busqueda.toLowerCase())
+    );
+  }
+
+  aplicarFiltrosYPaginacion() {
+    this.actualizarPaginacion(0, this.paginadorRows);
+  }
+
+  actualizarPaginacion(inicio: number, fin: number) {
+    this.ingresosPaginadas = this.ingresosFiltrados.slice(inicio, fin);
+  }
+
+  paginate(event: any) {
+    const inicio = event.first;
+    const fin = inicio + event.rows;
+    this.actualizarPaginacion(inicio, fin);
+  }
+
+  paginadorRows: number = 5;
 
   // Íconos de FontAwesome
   faCreditCard = faCreditCard;

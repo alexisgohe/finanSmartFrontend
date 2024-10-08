@@ -31,6 +31,7 @@ import { CurrencyPipe } from '@angular/common';
 import { TarjetaDebitoDialogComponent } from './dialog/tarjetaDebitoDialog/tarjetaDebitoDialog.component';
 import { TarjetaDebitoItemComponent } from './item/tarjetaDebitoItem/tarjetaDebitoItem.component';
 import { DialogLookupComponent } from './dialog/DialogLookup/DialogLookup.component';
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { DialogLookupComponent } from './dialog/DialogLookup/DialogLookup.compon
     NgxDaterangepickerMd.forRoot(),
     MatDialogModule,
     MatSnackBarModule,
-    CurrencyPipe
+    CurrencyPipe,
+    PaginatorModule
   ],
   providers: [
     AuthService,

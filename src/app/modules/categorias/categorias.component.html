@@ -7,14 +7,7 @@
     </button>
   </div>
 
-  <div class="p-4">
-    <div class="flex justify-between items-center mb-6">
-      <div class="flex items-center space-x-3">
-        <input [(ngModel)]="busqueda" placeholder="Buscar categorías..."
-          class="px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
-      </div>
-    </div>
-
+  <div class="table-container">
     <table class="min-w-full table-auto bg-white rounded-lg shadow-md">
       <thead>
         <tr class="bg-gray-100 border-b">
@@ -27,14 +20,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let categoria of categoriasFiltradas">
+        <tr *ngFor="let categoria of categoriasPaginadas">
           <td class="px-4 py-2 text-center border-t border-gray-200">{{ categoria.categoria_id }}</td>
           <td class="px-4 py-2 text-center border-t border-gray-200">
             <fa-icon [icon]="getIcon(categoria.img)"></fa-icon>
           </td>
           <td class="px-4 py-2 text-center border-t border-gray-200">{{ categoria.descripcion }}</td>
-          <td class="px-4 py-2 text-center border-t border-gray-200"><span
-              class="bg-gray-300 rounded-full px-2 py-1 text-xs font-bold">{{ categoria.tipo | CategoriasPipe }}</span>
+          <td class="px-4 py-2 text-center border-t border-gray-200">
+            <span class="bg-gray-300 rounded-full px-2 py-1 text-xs font-bold">
+              {{ categoria.tipo | CategoriasPipe }}
+            </span>
           </td>
           <td class="px-4 py-2 text-center border-t border-gray-200">
             <button (click)="eliminarCategoria(categoria.categoria_id)"
@@ -52,13 +47,20 @@
       </tbody>
     </table>
 
-    <div class="flex justify-between items-center mt-4">
-      <div class="text-sm text-gray-500">
-        Mostrando {{ categoriasFiltradas.length }} de {{ categorias.length }} categorías
-      </div>
-      <div class="space-x-2">
-        <!-- Botones de paginación si es necesario -->
-      </div>
+    <div class="flex justify-center my-4">
+      <p-paginator [rows]="paginadorRows" [totalRecords]="categoriasFiltradas.length" (onPageChange)="paginate($event)"
+        styleClass="bg-white shadow-md rounded-lg p-2"></p-paginator>
+    </div>
+
+  </div>
+
+
+  <div class="flex justify-between items-center mt-4">
+    <div class="text-sm text-gray-500">
+      Mostrando {{ categoriasFiltradas.length }} de {{ categorias.length }} categorías
+    </div>
+    <div class="space-x-2">
+      <!-- Botones de paginación si es necesario -->
     </div>
   </div>
 </div>

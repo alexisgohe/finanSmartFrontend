@@ -4,22 +4,22 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent {
-  title = 'nombre-del-proyecto';
-  isSidebarOpen = true; // Estado inicial del sidebar
-  showSidebarHeader = true; // Controla si se muestra o no el sidebar y header
+  isSidebarOpen = false;
+  showSidebarHeader = true;
+  isLoginPage = false;
 
-  constructor(private router: Router) {
-    // Detecta los cambios de ruta
+  constructor(private router: Router) {}
+
+  ngOnInit() {
     this.router.events.subscribe(() => {
-      // Verifica si la ruta actual es "/login"
-      this.showSidebarHeader = this.router.url !== '/login';
+      this.isLoginPage = this.router.url === '/login';
+      this.showSidebarHeader = !this.isLoginPage;
     });
   }
 
-  // Método para alternar el sidebar
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }

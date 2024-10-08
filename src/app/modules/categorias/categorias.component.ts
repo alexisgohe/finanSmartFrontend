@@ -22,8 +22,8 @@ const iconMap: Record<IconName, IconDefinition> = {
 })
 export class CategoriasComponent implements OnInit {
   busqueda: string = '';
-
   categorias: Categoria[] = [];
+  categoriasPaginadas: Categoria[] = []
 
   constructor(
     private generalService: GeneralService,
@@ -44,6 +44,7 @@ export class CategoriasComponent implements OnInit {
     this.generalService.getData('categorias/').subscribe({
       next: (data) => {
         this.categorias = data.data;
+        this.categoriasPaginadas = this.categorias.slice(0, 5);  // Mostrar las primeras 5 categorías
       },
       error: (error) => console.error('Error:', error),
     });
@@ -148,6 +149,14 @@ export class CategoriasComponent implements OnInit {
       );
     });
   }
+
+  paginate(event: any) {
+    const start = event.first;
+    const end = start + event.rows;
+    this.categoriasPaginadas = this.categorias.slice(start, end);  // Actualizar las categorías visibles
+  }
+
+  paginadorRows: number = 5;
 
   // Íconos de FontAwesome
   faEye = faEye;
