@@ -32,6 +32,11 @@ import { TarjetaDebitoDialogComponent } from './dialog/tarjetaDebitoDialog/tarje
 import { TarjetaDebitoItemComponent } from './item/tarjetaDebitoItem/tarjetaDebitoItem.component';
 import { DialogLookupComponent } from './dialog/DialogLookup/DialogLookup.component';
 import { PaginatorModule } from 'primeng/paginator';
+import { TableModule } from 'primeng/table';
+import { CalendarModule } from 'primeng/calendar';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { GastosComponent } from './modules/gastos/gastos.component';
+import { GastoDialogComponent } from './dialog/gastoDialog/gastoDialog.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +57,8 @@ import { PaginatorModule } from 'primeng/paginator';
     TarjetaDebitoDialogComponent,
     TarjetaDebitoItemComponent,
     DialogLookupComponent,
+    GastosComponent,
+    GastoDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +72,10 @@ import { PaginatorModule } from 'primeng/paginator';
     MatDialogModule,
     MatSnackBarModule,
     CurrencyPipe,
-    PaginatorModule
+    PaginatorModule,
+    TableModule,
+    CalendarModule,
+    CurrencyMaskModule
   ],
   providers: [
     AuthService,

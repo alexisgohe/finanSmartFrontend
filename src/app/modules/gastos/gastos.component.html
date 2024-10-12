@@ -1,3 +1,83 @@
-<p>
-  gastos works!
-</p>
+<div class="p-8 bg-gray-50 min-h-screen">
+  <div class="flex justify-between items-center p-4">
+    <h2 class="text-2xl font-bold text-gray-700">Gastos</h2>
+    <button (click)="nuevaGasto()"
+      class="bg-gray-800 text-white px-5 py-2 rounded-lg hover:bg-gray-700 transition-all flex items-center shadow">
+      <span class="mr-2">+</span> Agregar Gasto
+    </button>
+  </div>
+
+  <div class="p-4">
+    <div class="flex justify-between items-center mb-4">
+      <div class="w-[400px]">
+        <label class="block text-sm font-medium text-gray-600">Seleccionar rango de fechas</label>
+        <p-calendar [(ngModel)]="selectedRange" selectionMode="range" dateFormat="dd/MM/yyyy" [showIcon]="true"
+          (onSelect)="onDateRangeChange($event)" class="custom-calendar"></p-calendar>
+      </div>
+      <div class="flex items-center space-x-2">
+        <input [(ngModel)]="busqueda" (ngModelChange)="aplicarFiltrosYPaginacion()" placeholder="Buscar gastos..."
+          class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-gray-200 max-w-sm transition-all" />
+      </div>
+    </div>
+
+    <div class="flex justify-between items-center mb-4">
+      <div class="text-sm font-medium text-gray-600">
+        Total de gastos: {{ totalGastos | currency:'USD':'symbol':'1.2-2' }}
+      </div>
+    </div>
+
+    <!-- Tabla con PrimeNG -->
+    <p-table [value]="gastosFiltrados" [paginator]="true" [rows]="paginadorRows"
+      [totalRecords]="gastosFiltrados.length" (onPage)="paginate($event)">
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="text-center" pSortableColumn="gasto_id">ID <p-sortIcon field="gasto_id" class="ml-1"></p-sortIcon></th>
+          <th class="text-center" pSortableColumn="monto_gasto">Monto <p-sortIcon field="monto_gasto"></p-sortIcon></th>
+          <th class="text-center" pSortableColumn="fecha_gasto">Fecha <p-sortIcon field="fecha_gasto"></p-sortIcon></th>
+          <th class="text-center" pSortableColumn="descripcion_gasto">Descripción <p-sortIcon field="descripcion_gasto"></p-sortIcon>
+          </th>
+          <th class="text-center" pSortableColumn="categoria.descripcion">Categoría <p-sortIcon field="categoria.descripcion"></p-sortIcon>
+          </th>
+          <th class="text-center">Método</th>
+          <th class="text-center">Eliminar</th>
+          <th class="text-center">Editar</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-gasto>
+        <tr>
+          <td class="text-center">{{ gasto.gasto_id }}</td>
+          <td class="text-center">{{ gasto.monto_gasto | currency:'USD':'symbol':'1.2-2' }}</td>
+          <td class="text-center">{{ gasto.fecha_gasto | date: 'dd/MM/yyyy' }}</td>
+          <td class="text-center">{{ gasto.descripcion_gasto }}</td>
+          <td class="text-center">
+            <span class="bg-gray-300 rounded-full px-2 py-1 text-xs font-bold">{{ gasto.categoria.descripcion
+              }}</span>
+          </td>
+          <td class="text-center">
+            <ng-container *ngIf="gasto.transferencia">
+              <fa-icon [icon]="faCreditCard" class="h-4 w-4 text-blue-500"></fa-icon>
+            </ng-container>
+            <ng-template #efectivo>
+              <fa-icon [icon]="faMoneyBill1" class="h-4 w-4 text-green-500"></fa-icon>
+            </ng-template>
+          </td>
+          <td class="text-center">
+            <button (click)="eliminarGasto(gasto.gasto_id)" class="bg-gray-100 px-3 py-1 rounded-lg transition-all hover:bg-gray-200">
+              <fa-icon [icon]="faTrash" class="text-sm"></fa-icon>
+            </button>
+          </td>
+          <td class="text-center">
+            <button (click)="editarGasto(gasto)" class="bg-gray-100 px-3 py-1 rounded-lg transition-all hover:bg-gray-200">
+              <fa-icon [icon]="faPenToSquare" class="text-sm"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <div class="flex justify-between items-center mt-4">
+      <div class="text-sm text-gray-500">
+        Mostrando {{ gastosFiltrados.length }} de {{ gastos.length }} gastos
+      </div>
+    </div>
+  </div>

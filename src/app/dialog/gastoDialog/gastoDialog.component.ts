@@ -1,11 +1,11 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
+import { GeneralService } from '../../service/general.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LookupModel } from '../../models/lookup';
 import { DialogLookupComponent } from '../DialogLookup/DialogLookup.component';
-import { GeneralService } from '../../service/general.service';
-import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
+import { LookupModel } from '../../models/lookup';
 
 export interface DialogData {
   respuesta: string;
@@ -15,23 +15,23 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-ingresoDialog',
-  templateUrl: './ingresoDialog.component.html',
-  styleUrl: './ingresoDialog.component.css',
+  selector: 'app-gastoDialog',
+  templateUrl: './gastoDialog.component.html',
+  styleUrls: ['./gastoDialog.component.css']
 })
-export class IngresoDialogComponent {
-  ingresoForm!: FormGroup;
+export class GastoDialogComponent implements OnInit {
+  gastoForm!: FormGroup;
   fechaSeleccionada: Date | null = null;
   userId: any;
   nombreCuenta: string = "";
   nombreCategoria: string = "";
 
   get fControlH() {
-    return this.ingresoForm.controls;
+    return this.gastoForm.controls;
   }
 
   get fValueH() {
-    return this.ingresoForm.value;
+    return this.gastoForm.value;
   }
 
   // lookup
@@ -50,10 +50,10 @@ export class IngresoDialogComponent {
   ngOnInit(): void {
     this.userId = this.generalService.usuarioId();
 
-    this.ingresoForm = this.fb.group({
-      monto_ingreso: ['', [Validators.required, Validators.min(0)]],
-      fecha_ingreso: ['', Validators.required],
-      descripcion_ingreso: ['', Validators.required],
+    this.gastoForm = this.fb.group({
+      monto_gasto: ['', [Validators.required, Validators.min(0)]],
+      fecha_gasto: ['', Validators.required],
+      descripcion_gasto: ['', Validators.required],
       categoria_id: ['', Validators.required],
       usuario_id: ['', Validators.required],
       cuenta_destino_debito: ['', Validators.required],
@@ -69,9 +69,9 @@ export class IngresoDialogComponent {
   }
 
   onSubmit() {
-    if (this.ingresoForm.valid) {
+    if (this.gastoForm.valid) {
       if (this.data.accion === 'N') {
-        this.generalService.postData('ingresos/', this.fValueH).subscribe({
+        this.generalService.postData('gastos/', this.fValueH).subscribe({
           next: (response) => {
             this.snackBar, response, '', 5000, 'success-snackbar';
             this.dialogRef.close({
@@ -84,7 +84,7 @@ export class IngresoDialogComponent {
           }
         });
       } else if (this.data.accion === 'E') {
-        this.generalService.putData(`ingresos/${this.data.data.ingreso_id}/`, this.fValueH).subscribe({
+        this.generalService.putData(`gastos/${this.data.data.gasto_id}/`, this.fValueH).subscribe({
           next: (response) => {
             this.snackBar, response, '', 5000, 'success-snackbar';
             this.dialogRef.close({
@@ -116,9 +116,9 @@ export class IngresoDialogComponent {
   }
 
   cargarForm(): void {
-    this.fControlH['monto_ingreso'].setValue(this.data.data.monto_ingreso);
-    this.fControlH['fecha_ingreso'].setValue(this.data.data.fecha_ingreso);
-    this.fControlH['descripcion_ingreso'].setValue(this.data.data.descripcion_ingreso);
+    this.fControlH['monto_gasto'].setValue(this.data.data.monto_gasto);
+    this.fControlH['fecha_gasto'].setValue(this.data.data.fecha_gasto);
+    this.fControlH['descripcion_gasto'].setValue(this.data.data.descripcion_gasto);
     this.fControlH['categoria_id'].setValue(this.data.data.categoria.categoria_id);
     this.nombreCategoria = this.data.data.categoria.descripcion
     this.fControlH['cuenta_destino_debito'].setValue(this.data.data.transferencia.cuenta_origen_debito.tarjeta_debito_id);
