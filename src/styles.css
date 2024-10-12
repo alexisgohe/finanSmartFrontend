@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'primeng/resources/themes/saga-blue/theme.css';
+@import 'primeng/resources/primeng.min.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -54,4 +57,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   width: 70% !important;
   max-width: none !important;
   min-width: auto !important;
+}
+
+/* Estilos para el calendario */
+.custom-calendar .p-calendar{
+  width: 100%;
+}
+
+.custom-calendar input{
+  padding: 10px;
+}
+
+th sortalticon,
+th sortamountdownicon,
+th sortamountupalticon {
+  display: flex;
+  justify-content: center;
 }

@@ -20,27 +20,35 @@ import { IngresoDialogComponent } from '../../dialog/ingresoDialog/ingresoDialog
   providers: [CurrencyPipe],
 })
 export class IngresosComponent implements OnInit {
+  busqueda: string = '';
+
+  ingresos: Ingreso[] = [];
+  ingresosPaginadas: Ingreso[] = [];
+  paginadorRows: number = 5;
+  currentPage = 0;
+
+  selectedRange: any[] = [];
+  rangoTexto: string = 'Ninguno';
+
+  // Íconos de FontAwesome
+  faCreditCard = faCreditCard;
+  faMoneyBill1 = faMoneyBill1;
+  faPenToSquare = faPenToSquare;
+  faCalendarDay = faCalendarDay;
+  faTrash = faTrash;
+
   constructor(
     private generalService: GeneralService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {
-    this.paginadorRows = 5;
-  }
-
-  busqueda: string = '';
-  rangoVista: 'quincena' | 'mes' = 'mes';
-
-  ingresos: Ingreso[] = [];
-  // ingresosEnPagina: Ingreso[] = [];
-  ingresosPaginadas: Ingreso[] = []
-  currentPage = 1;
-  pageSize = 10;
-
-  selectedRange: { startDate: Date; endDate: Date } | undefined;
-  rangoTexto: string = 'Ninguno';
+  ) { }
 
   ngOnInit() {
+    const storedRange = localStorage.getItem('selectedRange');
+    if (storedRange) {
+      this.selectedRange = JSON.parse(storedRange).map((dateString: string) => new Date(dateString));
+    }
+
     this.getIngresos();
   }
 
@@ -54,31 +62,25 @@ export class IngresosComponent implements OnInit {
     });
   }
 
-  // Método que se llama cuando se cambia el rango de fechas
   onDateRangeChange(event: any): void {
-    const { startDate, endDate } = event;
+    // Verifica si 'event' es un arreglo y su longitud es 2
+    if (this.selectedRange.length === 2) {
 
-    if (startDate && endDate) {
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-
-      if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
-        this.rangoTexto = `${this.formatDate(start)} - ${this.formatDate(end)}`;
-        console.log(this.rangoTexto);
-      } else {
-        this.rangoTexto = 'Fecha inválida';
-      }
-    } else {
-      this.rangoTexto = 'Ninguno';
+      // Guardar en localStorage
+      localStorage.setItem('selectedRange', JSON.stringify(this.selectedRange));
     }
+    // Aplica los filtros para actualizar la tabla
+    this.aplicarFiltrosYPaginacion();
   }
 
   formatDate(date: Date): string {
-    return date.toLocaleDateString('es-ES', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    });
+    if (!date) {
+      return ''; // O manejarlo como consideres apropiado
+    }
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   get totalIngresos(): number {
@@ -88,7 +90,7 @@ export class IngresosComponent implements OnInit {
     );
   }
 
-  nuevaCategoria() {
+  nuevoIngreso() {
     const dialogRef = this.dialog.open(IngresoDialogComponent, {
       panelClass: 'mat-dialog-custom',
       data: {
@@ -100,10 +102,10 @@ export class IngresosComponent implements OnInit {
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe((result) => {
       if (result.respuesta) {
-        this.getIngresos()
+        this.getIngresos();
         this.generalService.openSnackBar(
           this.snackBar,
-          'Registo insertado con exito',
+          'Registro insertado con éxito',
           '',
           5000,
           'correcto-snackbar'
@@ -120,34 +122,89 @@ export class IngresosComponent implements OnInit {
     });
   }
 
+  editarIngreso(ingreso: any){
+    const dialogRef = this.dialog.open(IngresoDialogComponent, {
+      panelClass: 'mat-dialog-custom',
+      data: {
+        respuesta: '',
+        accion: 'E',
+        TituloAsigna: 'Editar Ingreso',
+        data: ingreso,
+      },
+    });
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.respuesta) {
+        this.getIngresos();
+        this.generalService.openSnackBar(
+          this.snackBar,
+          'Registro editado con éxito',
+          '',
+          5000,
+          'correcto-snackbar'
+        );
+      } else {
+        this.generalService.openSnackBar(
+          this.snackBar,
+          'No se realizó la edición del registro' + result.data,
+          '',
+          5000,
+          'mensaje-snackbar'
+        );
+      }
+    });
+  }
+
+  eliminarIngreso(ingreso_id: number){
+    this.generalService.deleteData(`ingresos/${ingreso_id}/`).subscribe({
+      next: (response) => {
+        this.getIngresos()
+        this.generalService.openSnackBar(
+          this.snackBar,
+          response.mensaje,
+          '',
+          5000,
+          'success-snackbar'
+        );
+      },
+      error: (error) => {
+        this.generalService.openSnackBar(
+          this.snackBar,
+          error.mensaje,
+          '',
+          5000,
+          'error-snackbar'
+        );
+      }
+    });
+  }
+
   get ingresosFiltrados() {
-    return this.ingresos.filter((ingreso) =>
-      ingreso.descripcion_ingreso
+    return this.ingresos.filter((ingreso) => {
+      const cumpleBusqueda = ingreso.descripcion_ingreso
         .toLowerCase()
-        .includes(this.busqueda.toLowerCase())
-    );
+        .includes(this.busqueda.toLowerCase());
+
+      const cumpleRangoFecha = this.selectedRange &&
+        Array.isArray(this.selectedRange) &&
+        this.selectedRange.length === 2 &&
+        ingreso.fecha_ingreso >= this.formatDate(this.selectedRange[0]) &&
+        ingreso.fecha_ingreso <= this.formatDate(this.selectedRange[1]);
+
+      // Devolverá true si hay búsqueda y cumple con el rango de fechas o si el rango es indefinido o null
+      return cumpleBusqueda && (!this.selectedRange || this.selectedRange.length < 2 || cumpleRangoFecha);
+    });
   }
 
   aplicarFiltrosYPaginacion() {
-    this.actualizarPaginacion(0, this.paginadorRows);
+    const start = this.currentPage * this.paginadorRows;
+    const end = start + this.paginadorRows;
+    this.ingresosPaginadas = this.ingresosFiltrados.slice(start, end);
   }
 
-  actualizarPaginacion(inicio: number, fin: number) {
-    this.ingresosPaginadas = this.ingresosFiltrados.slice(inicio, fin);
-  }
 
   paginate(event: any) {
-    const inicio = event.first;
-    const fin = inicio + event.rows;
-    this.actualizarPaginacion(inicio, fin);
+    this.currentPage = event.page;
+    this.aplicarFiltrosYPaginacion();
   }
-
-  paginadorRows: number = 5;
-
-  // Íconos de FontAwesome
-  faCreditCard = faCreditCard;
-  faMoneyBill1 = faMoneyBill1;
-  faPenToSquare = faPenToSquare;
-  faCalendarDay = faCalendarDay;
-  faTrash = faTrash;
 }

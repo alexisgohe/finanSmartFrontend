@@ -7,7 +7,7 @@ export interface Gasto {
   gasto_id: number;
   monto_gasto: number;
   fecha_gasto: string;
-  descripcion_gasto?: string;
+  descripcion_gasto: string;
   categoria: Categoria;
   usuario: Usuario;
   tarjeta: TarjetaCredito;
