@@ -54,12 +54,12 @@
               }}</span>
           </td>
           <td class="text-center">
-            <ng-container *ngIf="ingreso.transferencia">
+            <ng-container *ngIf="ingreso.transferencia.cuenta_origen_debito.banco_tarjeta !== 'Efectivo'">
               <fa-icon [icon]="faCreditCard" class="h-4 w-4 text-blue-500"></fa-icon>
             </ng-container>
-            <ng-template #efectivo>
+            <ng-container *ngIf="ingreso.transferencia.cuenta_origen_debito.banco_tarjeta === 'Efectivo'">
               <fa-icon [icon]="faMoneyBill1" class="h-4 w-4 text-green-500"></fa-icon>
-            </ng-template>
+            </ng-container>
           </td>
           <td class="text-center">
             <button (click)="eliminarIngreso(ingreso.ingreso_id)" class="bg-gray-100 px-3 py-1 rounded-lg transition-all hover:bg-gray-200">

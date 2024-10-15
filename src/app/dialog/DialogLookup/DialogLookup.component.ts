@@ -25,6 +25,9 @@ export class DialogLookupComponent {
 
   consultaServicio() {
     switch (this.data.servicio) {
+      case 'TarjetasCredito':
+        this.getTarjetasCredito();
+        break;
       case 'TarjetasDebito':
         this.getTarjetasDebito();
         break;
@@ -32,6 +35,15 @@ export class DialogLookupComponent {
         this.getCategoria();
         break;
     }
+  }
+
+  getTarjetasCredito() {
+    this.generalService.getData('tarjetasCredito/').subscribe({
+      next: (data) => {
+        this.DatosList = data.data;
+      },
+      error: (error) => console.error('Error:', error),
+    });
   }
 
   getTarjetasDebito() {
