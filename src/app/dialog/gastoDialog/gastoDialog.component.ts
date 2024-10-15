@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { GeneralService } from '../../service/general.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -23,8 +23,10 @@ export class GastoDialogComponent implements OnInit {
   gastoForm!: FormGroup;
   fechaSeleccionada: Date | null = null;
   userId: any;
-  nombreCuenta: string = "";
+  nombreCuentaCredito: string = "";
+  nombreCuentaDebito: string = "";
   nombreCategoria: string = "";
+  selectedPaymentMethod: string = '';
 
   get fControlH() {
     return this.gastoForm.controls;
@@ -35,7 +37,8 @@ export class GastoDialogComponent implements OnInit {
   }
 
   // lookup
-  colsLookTarjetas: any[] = [];
+  colsLookTarjetasCredito: any[] = [];
+  colsLookTarjetasDebito: any[] = [];
   colsLookCategorias: any[] = [];
 
   constructor(
@@ -56,12 +59,13 @@ export class GastoDialogComponent implements OnInit {
       descripcion_gasto: ['', Validators.required],
       categoria_id: ['', Validators.required],
       usuario_id: ['', Validators.required],
-      cuenta_destino_debito: ['', Validators.required],
+      cuenta_origen_credito: [''],
+      cuenta_origen_debito: [''],
     });
 
     this.fControlH['usuario_id'].setValue(this.userId);
 
-    if(this.data.accion === 'E') {
+    if (this.data.accion === 'E') {
       this.cargarForm();
     }
 
@@ -73,36 +77,41 @@ export class GastoDialogComponent implements OnInit {
       if (this.data.accion === 'N') {
         this.generalService.postData('gastos/', this.fValueH).subscribe({
           next: (response) => {
-            this.snackBar, response, '', 5000, 'success-snackbar';
+            this.generalService.openSnackBar(
+            this.snackBar, response, '', 5000, 'success-snackbar');
             this.dialogRef.close({
               data: {},
               respuesta: true,
             });
           },
           error: (error) => {
-            this.snackBar, error, '', 5000, 'error-snackbar';
+            this.generalService.openSnackBar(
+            this.snackBar, error, '', 5000, 'error-snackbar');
           }
         });
       } else if (this.data.accion === 'E') {
         this.generalService.putData(`gastos/${this.data.data.gasto_id}/`, this.fValueH).subscribe({
           next: (response) => {
-            this.snackBar, response, '', 5000, 'success-snackbar';
+            this.generalService.openSnackBar(
+            this.snackBar, response, '', 5000, 'success-snackbar');
             this.dialogRef.close({
               data: {},
               respuesta: true,
             });
           },
           error: (error) => {
-            this.snackBar, error, '', 5000, 'error-snackbar';
+            this.generalService.openSnackBar(
+            this.snackBar, error, '', 5000, 'error-snackbar');
           }
         });
       }
     } else {
+      this.generalService.openSnackBar(
       this.snackBar,
         'Capture los datos del formulario correctamente',
         '',
         5000,
-        'error-snackbar';
+        'error-snackbar');
     }
   }
 
@@ -121,8 +130,14 @@ export class GastoDialogComponent implements OnInit {
     this.fControlH['descripcion_gasto'].setValue(this.data.data.descripcion_gasto);
     this.fControlH['categoria_id'].setValue(this.data.data.categoria.categoria_id);
     this.nombreCategoria = this.data.data.categoria.descripcion
-    this.fControlH['cuenta_destino_debito'].setValue(this.data.data.transferencia.cuenta_origen_debito.tarjeta_debito_id);
-    this.nombreCuenta = this.data.data.transferencia.cuenta_origen_debito.banco_tarjeta
+    this.fControlH['cuenta_origen_credito'].setValue(this.data.data.transferencia.cuenta_origen_credito.tarjeta_credito_id);
+    this.nombreCuentaCredito = this.data.data.transferencia.cuenta_origen_credito.banco_tarjeta
+    this.fControlH['cuenta_origen_debito'].setValue(this.data.data.transferencia.cuenta_origen_credito.tarjeta_credito_id);
+    this.nombreCuentaDebito = this.data.data.transferencia.cuenta_origen_debito.banco_tarjeta
+  }
+
+  onPaymentMethodChange(event: Event) {
+    this.selectedPaymentMethod = (event.target as HTMLSelectElement).value;
   }
 
   // Método para abrir el diálogo de búsqueda y selección de datos
@@ -138,11 +153,12 @@ export class GastoDialogComponent implements OnInit {
         //Si es que hubo una respuesta positiva del dialog. <<25/08/2021>> Osvaldo T.L.
         this.lookupRetorno(result.data, lookup); //Se invoca función donde se aplica asignación de datos. <<12/05/2022>> Osvaldo T.L.
       } else {
+        this.generalService.openSnackBar(
         this.snackBar,
           'Capture los datos del formulario correctamente',
           '',
           5000,
-          'error-snackbar';
+          'error-snackbar');
       }
     });
   }
@@ -152,9 +168,15 @@ export class GastoDialogComponent implements OnInit {
     let data = new LookupModel();
     switch (lookup) {
       // Configuración específica para el lookup
+      case "TarjetasCredito":
+        data.titulo = "Tarjetas";
+        data.columnas = this.colsLookTarjetasCredito;
+        data.servicio = "TarjetasCredito";
+        data.retornoColum = ["row"];
+        break;
       case "TarjetasDebito":
         data.titulo = "Tarjetas";
-        data.columnas = this.colsLookTarjetas;
+        data.columnas = this.colsLookTarjetasDebito;
         data.servicio = "TarjetasDebito";
         data.retornoColum = ["row"];
         break;
@@ -173,21 +195,29 @@ export class GastoDialogComponent implements OnInit {
     switch (
     opcion //Se valida el caso del lookup.
     ) {
-      case "TarjetasDebito":
-        console.log(data)
-        this.nombreCuenta = data.banco_tarjeta
-        this.fControlH['cuenta_destino_debito'].setValue(data.tarjeta_debito_id);
+      case "TarjetasCredito":
+        console.log(data);
+        this.nombreCuentaCredito = data.banco_tarjeta
+        this.fControlH['cuenta_origen_credito'].setValue(data.tarjeta_credito_id);
         break;
-        case "Categorias":
-          console.log(data)
-          this.nombreCategoria = data.descripcion
+      case "TarjetasDebito":
+        console.log(data);
+        this.nombreCuentaDebito = data.banco_tarjeta
+        this.fControlH['cuenta_origen_debito'].setValue(data.tarjeta_debito_id);
+        break;
+      case "Categorias":
+        this.nombreCategoria = data.descripcion
         this.fControlH['categoria_id'].setValue(data.categoria_id);
         break;
     }
   }
 
   crearTablasLook() {
-    this.colsLookTarjetas = [
+    this.colsLookTarjetasCredito = [
+      { field: "tarjeta_credito_id", header: "Clave tarjeta", width: "115", nivel: "1" },
+      { field: "banco_tarjeta", header: "Nombre tarjeta", width: "auto", nivel: "1" },
+    ];
+    this.colsLookTarjetasDebito = [
       { field: "tarjeta_debito_id", header: "Clave tarjeta", width: "115", nivel: "1" },
       { field: "banco_tarjeta", header: "Nombre tarjeta", width: "auto", nivel: "1" },
     ];
