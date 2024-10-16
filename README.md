@@ -1,27 +1,38 @@
-# NombreDelProyecto
+# FinanSmart
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.5.
+FinanSmart es un proyecto orientado a la gestión de presupuestos personales, diseñado para ayudarte a controlar y optimizar tus finanzas.
 
-## Development server
+## Requisitos previos
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### NVM (Node Version Manager)
 
-## Code scaffolding
+Asegúrate de tener instalada la versión de Node.js **20.17.0**. Si aún no la tienes, puedes instalarla y configurarla usando [NVM](https://github.com/nvm-sh/nvm):
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```bash
+nvm install 20.17.0
+nvm use 20.17.0
+```
 
-## Build
+### Angular CLI
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Este proyecto utiliza Angular en su versión 18.2.5. Si no tienes esta versión instalada, puedes hacerlo con el siguiente comando:
 
-## Running unit tests
+```bash
+npm install -g @angular/cli@18.2.5
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Configuración del entorno de desarrollo
 
-## Running end-to-end tests
+Para preparar el entorno de desarrollo, sigue estos pasos:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+1. Instala las dependencias del proyecto:
 
-## Further help
+```bash
+npm install
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+2. Una vez completada la instalación, puedes iniciar el servidor de desarrollo ejecutando:
+
+```bash
+ng serve
+```
