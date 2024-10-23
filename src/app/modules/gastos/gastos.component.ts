@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
+import { BooleanPipe } from '../../pipes/boolean.pipe';
 import {
   faCreditCard,
   faMoneyBill1,
@@ -17,7 +18,7 @@ import { GastoDialogComponent } from '../../dialog/gastoDialog/gastoDialog.compo
   selector: 'app-gastos',
   templateUrl: './gastos.component.html',
   styleUrls: ['./gastos.component.css'],
-  providers: [CurrencyPipe],
+  providers: [CurrencyPipe, BooleanPipe],
 })
 export class GastosComponent implements OnInit {
 
@@ -91,7 +92,7 @@ export class GastosComponent implements OnInit {
     );
   }
 
-  nuevaGasto() {
+  nuevoGasto() {
     const dialogRef = this.dialog.open(GastoDialogComponent, {
       panelClass: 'mat-dialog-custom',
       data: {

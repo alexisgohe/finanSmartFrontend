@@ -23,6 +23,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CategoriaDialogComponent } from './dialog/categoriaDialog/categoriaDialog.component';
 import { CategoriasPipe } from './pipes/categorias.pipe';
+import { BooleanPipe } from './pipes/boolean.pipe';
 import { TarjetaCreditoComponent } from './modules/tarjetaCredito/tarjetaCredito.component';
 import { TarjetaCreditoItemComponent } from './item/tarjetaCreditoItem/tarjetaCreditoItem.component';
 import { TarjetaCreditoDialogComponent } from './dialog/tarjetaCreditoDialog/tarjetaCreditoDialog.component';
@@ -37,6 +38,9 @@ import { CalendarModule } from 'primeng/calendar';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { GastosComponent } from './modules/gastos/gastos.component';
 import { GastoDialogComponent } from './dialog/gastoDialog/gastoDialog.component';
+import { TransaccionesDialogComponent } from './dialog/transaccionesDialog/transaccionesDialog.component';
+import { TransferenciasComponent } from './modules/transferencias/transferencias.component';
+import { MsiComponent } from './modules/msi/msi.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +54,7 @@ import { GastoDialogComponent } from './dialog/gastoDialog/gastoDialog.component
     IngresoDialogComponent,
     CategoriaDialogComponent,
     CategoriasPipe,
+    BooleanPipe,
     TarjetaCreditoComponent,
     TarjetaCreditoItemComponent,
     TarjetaCreditoDialogComponent,
@@ -58,7 +63,10 @@ import { GastoDialogComponent } from './dialog/gastoDialog/gastoDialog.component
     TarjetaDebitoItemComponent,
     DialogLookupComponent,
     GastosComponent,
-    GastoDialogComponent
+    GastoDialogComponent,
+    TransferenciasComponent,
+    TransaccionesDialogComponent,
+    MsiComponent
   ],
   imports: [
     BrowserModule,
