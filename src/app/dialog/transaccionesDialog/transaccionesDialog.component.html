@@ -2,55 +2,55 @@
   <div class="bg-white rounded-xl shadow-xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto">
     <h2 class="text-2xl font-semibold text-gray-700 pb-6">{{ data.TituloAsigna }}</h2>
     <p class="text-gray-500 mb-6">
-      Complete los detalles del nuevo ingreso aquí. Haga clic en guardar cuando termine.
+      Complete los detalles de la nueva transacción aquí. Haga clic en guardar cuando termine.
     </p>
 
-    <form [formGroup]="ingresoForm" (ngSubmit)="onSubmit()" class="bg-white rounded-lg space-y-6">
+    <form [formGroup]="transaccionesForm" (ngSubmit)="onSubmit()" class="bg-white rounded-lg space-y-6">
       <div class="relative">
-        <input id="monto_ingreso" type="text" formControlName="monto_ingreso" placeholder=" " required  currencyMask [options]="{ prefix: '$ ', thousands: ',', decimal: '.', precision: 2, align : 'left' } "
+        <input id="monto_transacciones" type="text" formControlName="monto_transacciones" placeholder=" " required  currencyMask [options]="{ prefix: '$ ', thousands: ',', decimal: '.', precision: 2, align : 'left' } "
           class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
-        <label for="monto_ingreso"
+        <label for="monto_transacciones"
           class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
           Monto
         </label>
       </div>
 
-      <div class="relative">
-        <input id="fecha_ingreso" type="date" formControlName="fecha_ingreso" (change)="seleccionarFecha($event)" placeholder=" " required
+      <div class="relative flex items-center gap-2">
+        <input id="cuenta_destino_debito" type="text" placeholder=" " [value]="nombreCuentaOrigen" disabled required
           class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
-        <label for="fecha_ingreso"
+        <label for="cuenta_destino_debito"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          De
+        </label>
+        <fa-icon [icon]="faMagnifyingGlass" class="text-sm cursor-pointer" (click)="Lookup('TarjetasDebito')"></fa-icon>
+      </div>
+
+      <div class="relative flex items-center gap-2">
+        <input id="cuenta_destino_debito" type="text" placeholder=" " [value]="nombreCuentaDestino" disabled required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="cuenta_destino_debito"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          A
+        </label>
+        <fa-icon [icon]="faMagnifyingGlass" class="text-sm cursor-pointer" (click)="Lookup('TarjetasDebito')"></fa-icon>
+      </div>
+
+      <div class="relative">
+        <input id="fecha_transacciones" type="date" formControlName="fecha_transacciones" (change)="seleccionarFecha($event)" placeholder=" " required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="fecha_transacciones"
           class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
           Fecha
         </label>
       </div>
 
       <div class="relative">
-        <input id="descripcion_ingreso" type="text" formControlName="descripcion_ingreso" placeholder=" " required
+        <input id="descripcion_transacciones" type="text" formControlName="descripcion_transacciones" placeholder=" " required
           class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
-        <label for="descripcion_ingreso"
+        <label for="descripcion_transacciones"
           class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
           Descripción
         </label>
-      </div>
-
-      <div class="relative flex items-center gap-2">
-        <input id="categoria_id" type="text" placeholder=" " [value]="nombreCategoria" disabled required
-          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
-        <label for="categoria_id"
-          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
-          Categoría
-        </label>
-        <fa-icon [icon]="faMagnifyingGlass" class="text-sm cursor-pointer" (click)="Lookup('Categorias')"></fa-icon>
-      </div>
-
-      <div class="relative flex items-center gap-2">
-        <input id="cuenta_destino_debito" type="text" placeholder=" " [value]="nombreCuenta" disabled required
-          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
-        <label for="cuenta_destino_debito"
-          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
-          Tarjeta destino
-        </label>
-        <fa-icon [icon]="faMagnifyingGlass" class="text-sm cursor-pointer" (click)="Lookup('TarjetasDebito')"></fa-icon>
       </div>
 
       <div class="flex justify-end mt-8">

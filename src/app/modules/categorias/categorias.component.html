@@ -8,7 +8,7 @@
   </div>
 
   <!-- Tabla con PrimeNG -->
-  <p-table [value]="categoriasPaginadas" [paginator]="true" [rows]="paginadorRows"
+  <p-table [value]="categoriasFiltradas" [paginator]="true" [rows]="paginadorRows"
     [totalRecords]="categoriasFiltradas.length" (onPage)="paginate($event)">
     <ng-template pTemplate="header">
       <tr>

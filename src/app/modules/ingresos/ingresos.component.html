@@ -54,10 +54,10 @@
               }}</span>
           </td>
           <td class="text-center">
-            <ng-container *ngIf="ingreso.transferencia.cuenta_origen_debito.banco_tarjeta !== 'Efectivo'">
+            <ng-container *ngIf="ingreso.transferencia.cuenta_destino_debito.banco_tarjeta !== 'Efectivo'">
               <fa-icon [icon]="faCreditCard" class="h-4 w-4 text-blue-500"></fa-icon>
             </ng-container>
-            <ng-container *ngIf="ingreso.transferencia.cuenta_origen_debito.banco_tarjeta === 'Efectivo'">
+            <ng-container *ngIf="ingreso.transferencia.cuenta_destino_debito.banco_tarjeta === 'Efectivo'">
               <fa-icon [icon]="faMoneyBill1" class="h-4 w-4 text-green-500"></fa-icon>
             </ng-container>
           </td>

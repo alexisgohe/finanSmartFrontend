@@ -15,7 +15,12 @@
         <li *ngFor="let menuItem of menuItems">
           <button
             (click)="navigation(menuItem.url)"
-            class="w-full flex items-center justify-start space-x-2 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200 text-gray-600 hover:text-gray-900">
+            class="w-full flex items-center justify-start space-x-2 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200 text-gray-600 hover:text-gray-900"
+            [ngClass]="{
+              'bg-gray-200 text-gray-900': selectedMenuItem === menuItem.url,
+              'text-gray-600 hover:bg-gray-100 hover:text-gray-900': selectedMenuItem !== menuItem.url
+            }"
+            >
             <fa-icon class="w-5 h-5" [icon]="menuItem.icon"></fa-icon>
             <span class="text-sm font-medium">{{ menuItem.label }}</span>
           </button>

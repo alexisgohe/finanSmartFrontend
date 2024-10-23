@@ -1,17 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { GeneralService } from '../../service/general.service';
 import { Categoria } from '../../models/categoria.model';
-import { faEye, faTrash, faPenToSquare, faWallet, faHouseChimney, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faTrash, faPenToSquare, faWallet, faHouseChimney, faCar, faAppleWhole, faPiggyBank, faPerson, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CategoriaDialogComponent } from '../../dialog/categoriaDialog/categoriaDialog.component';
 import { CategoriasPipe } from '../../pipes/categorias.pipe';
 
-type IconName = 'faWallet' | 'faHouseChimney';
+type IconName = 'faWallet' | 'faHouseChimney' | 'faCar' | 'faAppleWhole' | 'faPiggyBank' | 'faPerson';
 
 const iconMap: Record<IconName, IconDefinition> = {
   faWallet: faWallet,
-  faHouseChimney: faHouseChimney
+  faHouseChimney: faHouseChimney,
+  faCar: faCar,
+  faAppleWhole: faAppleWhole,
+  faPiggyBank: faPiggyBank,
+  faPerson: faPerson,
 };
 
 @Component({
