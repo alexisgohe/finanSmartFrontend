@@ -30,12 +30,15 @@
       </div>
 
       <div class="relative">
-        <select id="img" formControlName="img" required
-          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm appearance-none">
-          <option value="" disabled selected>Seleccione un icono</option>
-          <option value="faWallet">faWallet</option>
-          <option value="faPenToSquare">faPenToSquare</option>
-        </select>
+        <div class="custom-select" (click)="toggleDropdown()">
+          <fa-icon *ngIf="selectedIcon" [icon]="selectedIcon" class="text-lg mr-2 ml-1"></fa-icon>
+          <span>{{ selectedLabel || 'Seleccione un icono' }}</span>
+        </div>
+        <ul class="dropdown" *ngIf="dropdownOpen">
+          <li *ngFor="let icon of icons" (click)="selectIcon(icon)">
+            <fa-icon [icon]="icon.icon" class="text-sm mr-2 ml-1"></fa-icon> {{ icon.label }}
+          </li>
+        </ul>
         <label for="img"
           class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
           Icono

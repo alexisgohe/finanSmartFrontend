@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { GeneralService } from '../../service/general.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { faEye, faTrash, faPenToSquare, faWallet, faHouseChimney, faCar, faAppleWhole, faPiggyBank, faPerson } from '@fortawesome/free-solid-svg-icons';
 
 export interface DialogData {
   respuesta: string;
@@ -65,36 +66,41 @@ export class CategoriaDialogComponent {
       if (this.data.accion === 'N') {
         this.generalService.postData('categorias/', this.fValueH).subscribe({
           next: (response) => {
-            this.snackBar, response, '', 5000, 'success-snackbar';
+            this.generalService.openSnackBar(
+            this.snackBar, response, '', 5000, 'success-snackbar');
             this.dialogRef.close({
               data: {},
               respuesta: true,
             });
           },
           error: (error) => {
-            this.snackBar, error, '', 5000, 'error-snackbar';
+            this.generalService.openSnackBar(
+            this.snackBar, error, '', 5000, 'error-snackbar');
           }
         });
       } else if (this.data.accion === 'E') {
         this.generalService.putData(`categorias/${this.data.data.categoria_id}/`, this.fValueH).subscribe({
           next: (response) => {
-            this.snackBar, response, '', 5000, 'success-snackbar';
+            this.generalService.openSnackBar(
+            this.snackBar, response, '', 5000, 'success-snackbar');
             this.dialogRef.close({
               data: {},
               respuesta: true,
             });
           },
           error: (error) => {
-            this.snackBar, error, '', 5000, 'error-snackbar';
+            this.generalService.openSnackBar(
+            this.snackBar, error, '', 5000, 'error-snackbar');
           }
         });
       }
     } else {
-      this.snackBar,
+      this.generalService.openSnackBar(
+        this.snackBar,
         'Capture los datos del formulario correctamente',
         '',
         5000,
-        'error-snackbar';
+        'error-snackbar');
     }
   }
 
@@ -105,5 +111,29 @@ export class CategoriaDialogComponent {
   seleccionarFecha(event: Event) {
     const input = event.target as HTMLInputElement;
     this.fechaSeleccionada = input.valueAsDate;
+  }
+
+  dropdownOpen = false;
+  selectedIcon: any;
+  selectedLabel: string | null = null;
+
+  icons = [
+    { label: 'Cartera', value: "faWallet", icon: faWallet },
+    { label: 'Casa', value: "faHouseChimney", icon: faHouseChimney  },
+    { label: 'Coche', value: "faCar", icon: faCar  },
+    { label: 'Manzana', value: "faAppleWhole", icon: faAppleWhole  },
+    { label: 'Alcancía', value: "faPiggyBank", icon: faPiggyBank  },
+    { label: 'Persona', value: "faPerson", icon: faPerson  }
+  ];
+
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  selectIcon(icon: any) {
+    this.selectedIcon = icon.icon;
+    this.selectedLabel = icon.label;
+    this.fControlH['img'].setValue(icon.value);
+    this.dropdownOpen = false;
   }
 }

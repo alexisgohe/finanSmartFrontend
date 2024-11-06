@@ -12,6 +12,7 @@ export interface Transacciones {
   tipo: string;
   gasto_ingreso: number;
   descripcion: string;
-  categoria: string;
+  categoria_id: number;
+  descripcion_categoria: string;
   usuario_id: number;
 }

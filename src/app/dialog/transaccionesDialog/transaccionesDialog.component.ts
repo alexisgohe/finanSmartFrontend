@@ -20,23 +20,28 @@ export interface DialogData {
   styleUrls: ['./transaccionesDialog.component.css']
 })
 export class TransaccionesDialogComponent implements OnInit {
-  transaccionesForm!: FormGroup;
+  transferenciasForm!: FormGroup;
   fechaSeleccionada: Date | null = null;
   userId: any;
   nombreCuentaOrigen: string = "";
   nombreCuentaDestino: string = "";
   nombreCategoria: string = "";
 
+  nombreCuentaCredito: string = "";
+  nombreCuentaDebito: string = "";
+  selectedPaymentMethod: string = '';
+
   get fControlH() {
-    return this.transaccionesForm.controls;
+    return this.transferenciasForm.controls;
   }
 
   get fValueH() {
-    return this.transaccionesForm.value;
+    return this.transferenciasForm.value;
   }
 
   // lookup
-  colsLookTarjetas: any[] = [];
+  colsLookTarjetasCredito: any[] = [];
+  colsLookTarjetasDebito: any[] = [];
   colsLookCategorias: any[] = [];
 
   constructor(
@@ -51,16 +56,20 @@ export class TransaccionesDialogComponent implements OnInit {
   ngOnInit(): void {
     this.userId = this.generalService.usuarioId();
 
-    this.transaccionesForm = this.fb.group({
-      monto_transacciones: ['', [Validators.required, Validators.min(0)]],
-      fecha_transacciones: ['', Validators.required],
-      descripcion_transacciones: ['', Validators.required],
-      categoria_id: ['', Validators.required],
-      usuario_id: ['', Validators.required],
-      cuenta_destino_debito: ['', Validators.required],
+    this.transferenciasForm = this.fb.group({
+      cuenta_origen_debito: [''],
+      cuenta_destino_debito: [''],
+      cuenta_destino_credito: [''],
+      monto: ['', [Validators.required, Validators.min(0)]],
+      fecha: ['', Validators.required],
+      tipo: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      usuario: ['', Validators.required],
+      categoria: ['', Validators.required],
     });
 
-    this.fControlH['usuario_id'].setValue(this.userId);
+    this.fControlH['usuario'].setValue(this.userId);
+    this.fControlH['tipo'].setValue("T");
 
     if(this.data.accion === 'E') {
       this.cargarForm();
@@ -70,9 +79,10 @@ export class TransaccionesDialogComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.transaccionesForm.valid) {
+    debugger
+    if (this.transferenciasForm.valid) {
       if (this.data.accion === 'N') {
-        this.generalService.postData('transacciones/', this.fValueH).subscribe({
+        this.generalService.postData('transferencia/', this.fValueH).subscribe({
           next: (response) => {
             this.snackBar, response, '', 5000, 'success-snackbar';
             this.dialogRef.close({
@@ -85,7 +95,7 @@ export class TransaccionesDialogComponent implements OnInit {
           }
         });
       } else if (this.data.accion === 'E') {
-        this.generalService.putData(`transacciones/${this.data.data.transacciones_id}/`, this.fValueH).subscribe({
+        this.generalService.putData(`transferencia/${this.data.data.transferencias_id}/`, this.fValueH).subscribe({
           next: (response) => {
             this.snackBar, response, '', 5000, 'success-snackbar';
             this.dialogRef.close({
@@ -116,14 +126,28 @@ export class TransaccionesDialogComponent implements OnInit {
     this.fechaSeleccionada = input.valueAsDate;
   }
 
+  onPaymentMethodChange(event: Event) {
+    this.selectedPaymentMethod = (event.target as HTMLSelectElement).value;
+  }
+
   cargarForm(): void {
-    this.fControlH['monto_transacciones'].setValue(this.data.data.monto_transacciones);
-    this.fControlH['fecha_transacciones'].setValue(this.data.data.fecha_transacciones);
-    this.fControlH['descripcion_transacciones'].setValue(this.data.data.descripcion_transacciones);
-    this.fControlH['categoria_id'].setValue(this.data.data.categoria.categoria_id);
-    this.nombreCategoria = this.data.data.categoria.descripcion
-    this.fControlH['cuenta_destino_debito'].setValue(this.data.data.transferencia.cuenta_origen_debito.tarjeta_debito_id);
-    this.nombreCuentaOrigen = this.data.data.transferencia.cuenta_origen_debito.banco_tarjeta
+    this.fControlH['monto'].setValue(this.data.data.monto);
+    this.fControlH['fecha'].setValue(this.data.data.fecha);
+    this.fControlH['descripcion'].setValue(this.data.data.descripcion);
+    this.fControlH['categoria'].setValue(this.data.data.categoria_id);
+    this.nombreCategoria = this.data.data.descripcion_categoria;
+    this.fControlH['cuenta_origen_debito'].setValue(this.data.data.cuenta_origen_debito?.tarjeta_debito_id ?? '');
+    this.nombreCuentaOrigen = this.data.data.cuenta_origen_debito?.banco_tarjeta ?? '';
+    if (this.data.data.cuenta_destino_debito) {
+      this.selectedPaymentMethod = 'debito'
+      this.fControlH['cuenta_destino_debito'].setValue(this.data.data.cuenta_destino_debito?.tarjeta_debito_id ?? '');
+      this.nombreCuentaDebito = this.data.data.cuenta_destino_debito?.banco_tarjeta ?? '';
+    }
+    if (this.data.data.cuenta_destino_credito) {
+      this.selectedPaymentMethod = 'credito'
+      this.fControlH['cuenta_destino_credito'].setValue(this.data.data.cuenta_destino_credito?.tarjeta_credito_id ?? '');
+      this.nombreCuentaCredito = this.data.data.cuenta_destino_credito?.banco_tarjeta ?? '';
+    }
   }
 
   // Método para abrir el diálogo de búsqueda y selección de datos
@@ -139,11 +163,12 @@ export class TransaccionesDialogComponent implements OnInit {
         //Si es que hubo una respuesta positiva del dialog. <<25/08/2021>> Osvaldo T.L.
         this.lookupRetorno(result.data, lookup); //Se invoca función donde se aplica asignación de datos. <<12/05/2022>> Osvaldo T.L.
       } else {
-        this.snackBar,
+        this.generalService.openSnackBar(
+          this.snackBar,
           'Capture los datos del formulario correctamente',
           '',
           5000,
-          'error-snackbar';
+          'error-snackbar');
       }
     });
   }
@@ -155,8 +180,20 @@ export class TransaccionesDialogComponent implements OnInit {
       // Configuración específica para el lookup
       case "TarjetasDebito":
         data.titulo = "Tarjetas";
-        data.columnas = this.colsLookTarjetas;
+        data.columnas = this.colsLookTarjetasDebito;
         data.servicio = "TarjetasDebito";
+        data.retornoColum = ["row"];
+        break;
+      case "TarjetaDebitoDestino":
+        data.titulo = "Tarjetas";
+        data.columnas = this.colsLookTarjetasDebito;
+        data.servicio = "TarjetasDebito";
+        data.retornoColum = ["row"];
+        break;
+      case "TarjetaDestinoCredito":
+        data.titulo = "Tarjetas";
+        data.columnas = this.colsLookTarjetasCredito;
+        data.servicio = "TarjetasCredito";
         data.retornoColum = ["row"];
         break;
       case "Categorias":
@@ -176,17 +213,29 @@ export class TransaccionesDialogComponent implements OnInit {
     ) {
       case "TarjetasDebito":
         this.nombreCuentaOrigen = data.banco_tarjeta
+        this.fControlH['cuenta_origen_debito'].setValue(data.tarjeta_debito_id);
+        break;
+      case "TarjetaDebitoDestino":
+        this.nombreCuentaDebito = data.banco_tarjeta
         this.fControlH['cuenta_destino_debito'].setValue(data.tarjeta_debito_id);
         break;
-        case "Categorias":
-          this.nombreCategoria = data.descripcion
-        this.fControlH['categoria_id'].setValue(data.categoria_id);
+        case "TarjetaDestinoCredito":
+        this.nombreCuentaCredito = data.banco_tarjeta
+        this.fControlH['cuenta_destino_credito'].setValue(data.tarjeta_credito_id);
+        break;
+      case "Categorias":
+        this.nombreCategoria = data.descripcion
+        this.fControlH['categoria'].setValue(data.categoria_id);
         break;
     }
   }
 
   crearTablasLook() {
-    this.colsLookTarjetas = [
+    this.colsLookTarjetasCredito = [
+      { field: "tarjeta_credito_id", header: "Clave tarjeta", width: "115", nivel: "1" },
+      { field: "banco_tarjeta", header: "Nombre tarjeta", width: "auto", nivel: "1" },
+    ];
+    this.colsLookTarjetasDebito = [
       { field: "tarjeta_debito_id", header: "Clave tarjeta", width: "115", nivel: "1" },
       { field: "banco_tarjeta", header: "Nombre tarjeta", width: "auto", nivel: "1" },
     ];
