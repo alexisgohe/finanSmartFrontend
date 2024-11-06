@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { Transacciones } from '../../models/transacciones.model';
 import { GeneralService } from '../../service/general.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,11 +11,17 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { TransaccionesDialogComponent } from '../../dialog/transaccionesDialog/transaccionesDialog.component';
+import { CurrencyPipe, DatePipe } from "@angular/common";
 
 @Component({
   selector: 'app-transferencias',
   templateUrl: './transferencias.component.html',
-  styleUrls: ['./transferencias.component.css']
+  styleUrls: ['./transferencias.component.css'],
+  providers: [
+    CurrencyPipe,
+    DatePipe
+  ],
+
 })
 export class TransferenciasComponent {
   busqueda: string = '';
@@ -39,7 +44,9 @@ export class TransferenciasComponent {
   constructor(
     private generalService: GeneralService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private currencyPipe: CurrencyPipe,
+    private datePipe: DatePipe,
   ) { }
 
   ngOnInit() {
@@ -88,12 +95,16 @@ export class TransferenciasComponent {
       ? this.transaccionesFiltrados
       : this.transacciones;
 
+    console.log(transaccionesAConsiderar);
     const ingresos = transaccionesAConsiderar
       .filter(transaccion => transaccion.tipo === 'I') // Filtrar ingresos
       .reduce((sum, transaccion) => sum + transaccion.monto, 0); // Sumar montos de ingresos
 
     const gastos = transaccionesAConsiderar
-      .filter(transaccion => transaccion.tipo === 'G') // Filtrar gastos
+      .filter(transaccion =>
+        transaccion.tipo === 'G' || // Filtrar gastos regulares
+        (transaccion.tipo === 'T' && transaccion.cuenta_origen_debito && transaccion.cuenta_destino_credito && !transaccion.cuenta_destino_debito) // Filtrar transferencias como gasto
+      )
       .reduce((sum, transaccion) => sum + transaccion.monto, 0); // Sumar montos de gastos
 
     return ingresos - gastos; // Resta ingresos menos gastos
@@ -190,21 +201,31 @@ export class TransferenciasComponent {
   }
 
   get transaccionesFiltrados() {
-    return this.transacciones.filter((transacciones) => {
+    return this.transacciones.filter((transaccion) => {
+      const tipoTransformado = this.datePipe.transform(transaccion.fecha, 'dd/MM/yyyy');
       const cumpleBusqueda =
-        transacciones.descripcion &&
-        transacciones.descripcion
-          .toLowerCase()
-          .includes(this.busqueda.toLowerCase());
+        (transaccion.descripcion &&
+          transaccion.descripcion
+            .toLowerCase()
+            .includes(this.busqueda.toLowerCase())) ||
+        (transaccion.descripcion_categoria &&
+          transaccion.descripcion_categoria
+            .toLowerCase()
+            .includes(this.busqueda.toLowerCase())) ||
+        transaccion.transferencia_id.toString().includes(this.busqueda) ||
+        transaccion.monto.toString().includes(this.busqueda) ||
+        (tipoTransformado && tipoTransformado.toLowerCase().includes(this.busqueda.toLowerCase()));
+      ;
 
       const cumpleRangoFecha = this.selectedRange &&
         Array.isArray(this.selectedRange) &&
         this.selectedRange.length === 2 &&
-        transacciones.fecha >= this.formatDate(this.selectedRange[0]) &&
-        transacciones.fecha <= this.formatDate(this.selectedRange[1]);
+        transaccion.fecha >= this.formatDate(this.selectedRange[0]) &&
+        transaccion.fecha <= this.formatDate(this.selectedRange[1]);
 
       // Devolverá true si hay búsqueda y cumple con el rango de fechas o si el rango es indefinido o null
-      return cumpleBusqueda && (!this.selectedRange || this.selectedRange.length < 2 || cumpleRangoFecha);
+      return cumpleBusqueda &&
+        (!this.selectedRange || this.selectedRange.length < 2 || cumpleRangoFecha)
     });
   }
 

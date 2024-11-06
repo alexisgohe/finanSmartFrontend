@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { LookupModel } from '../../models/lookup';
 import { DialogLookupComponent } from '../DialogLookup/DialogLookup.component';
 import { GeneralService } from '../../service/general.service';
-import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 export interface DialogData {
   respuesta: string;
@@ -61,7 +61,7 @@ export class IngresoDialogComponent {
 
     this.fControlH['usuario_id'].setValue(this.userId);
 
-    if(this.data.accion === 'E') {
+    if (this.data.accion === 'E') {
       this.cargarForm();
     }
 
@@ -73,36 +73,46 @@ export class IngresoDialogComponent {
       if (this.data.accion === 'N') {
         this.generalService.postData('ingresos/', this.fValueH).subscribe({
           next: (response) => {
-            this.snackBar, response, '', 5000, 'success-snackbar';
-            this.dialogRef.close({
-              data: {},
-              respuesta: true,
-            });
+            if (!response.error) {
+              this.generalService.openSnackBar(
+                this.snackBar, response.mensaje, '', 5000, 'success-snackbar');
+              this.dialogRef.close({
+                data: {},
+                respuesta: true,
+              });
+            } else {
+              this.generalService.openSnackBar(
+                this.snackBar, response.mensaje, '', 5000, 'error-snackbar');
+            }
           },
           error: (error) => {
-            this.snackBar, error, '', 5000, 'error-snackbar';
+            this.generalService.openSnackBar(
+              this.snackBar, error.mensaje, '', 5000, 'error-snackbar');
           }
         });
       } else if (this.data.accion === 'E') {
         this.generalService.putData(`ingresos/${this.data.data.ingreso_id}/`, this.fValueH).subscribe({
           next: (response) => {
-            this.snackBar, response, '', 5000, 'success-snackbar';
+            this.generalService.openSnackBar(
+              this.snackBar, response, '', 5000, 'success-snackbar');
             this.dialogRef.close({
               data: {},
               respuesta: true,
             });
           },
           error: (error) => {
-            this.snackBar, error, '', 5000, 'error-snackbar';
+            this.generalService.openSnackBar(
+              this.snackBar, error, '', 5000, 'error-snackbar');
           }
         });
       }
     } else {
-      this.snackBar,
+      this.generalService.openSnackBar(
+        this.snackBar,
         'Capture los datos del formulario correctamente',
         '',
         5000,
-        'error-snackbar';
+        'error-snackbar');
     }
   }
 
@@ -138,11 +148,12 @@ export class IngresoDialogComponent {
         //Si es que hubo una respuesta positiva del dialog. <<25/08/2021>> Osvaldo T.L.
         this.lookupRetorno(result.data, lookup); //Se invoca función donde se aplica asignación de datos. <<12/05/2022>> Osvaldo T.L.
       } else {
-        this.snackBar,
+        this.generalService.openSnackBar(
+          this.snackBar,
           'Capture los datos del formulario correctamente',
           '',
           5000,
-          'error-snackbar';
+          'error-snackbar');
       }
     });
   }
@@ -177,8 +188,8 @@ export class IngresoDialogComponent {
         this.nombreCuenta = data.banco_tarjeta
         this.fControlH['cuenta_destino_debito'].setValue(data.tarjeta_debito_id);
         break;
-        case "Categorias":
-          this.nombreCategoria = data.descripcion
+      case "Categorias":
+        this.nombreCategoria = data.descripcion
         this.fControlH['categoria_id'].setValue(data.categoria_id);
         break;
     }

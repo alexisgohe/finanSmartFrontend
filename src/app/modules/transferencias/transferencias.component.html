@@ -37,7 +37,8 @@
         <tr>
           <th class="text-center" pSortableColumn="transferencia_id">ID <p-sortIcon field="transferencia_id"
               class="ml-1"></p-sortIcon></th>
-          <th class="text-center" pSortableColumn="categoria">Categoría <p-sortIcon field="categoria"></p-sortIcon>
+          <th class="text-center" pSortableColumn="categoria">Categoría <p-sortIcon
+              field="descripcion_categoria"></p-sortIcon>
           </th>
           <th class="text-center" pSortableColumn="monto">Ingreso <p-sortIcon field="monto"></p-sortIcon></th>
           <th class="text-center" pSortableColumn="monto">Gasto <p-sortIcon field="monto"></p-sortIcon></th>
@@ -54,16 +55,20 @@
         <tr>
           <td class="text-center">{{ transacciones.transferencia_id }}</td>
           <td class="text-center">
-            <span class="bg-gray-300 rounded-full px-2 py-1 text-xs font-bold">{{ transacciones.categoria
+            <span class="bg-gray-300 rounded-full px-2 py-1 text-xs font-bold">{{ transacciones.descripcion_categoria
               }}</span>
           </td>
           <td class="text-center text-green-500">
-            <ng-container *ngIf="transacciones.tipo === 'I'">
+            <ng-container
+              *ngIf="transacciones.tipo === 'I' ||
+                      (transacciones.tipo === 'T' && transacciones.cuenta_origen_debito && transacciones.cuenta_destino_debito)">
               {{ transacciones.monto | currency:'USD':'symbol':'1.2-2' }}
             </ng-container>
           </td>
           <td class="text-center text-red-500">
-            <ng-container *ngIf="transacciones.tipo === 'G'">
+            <ng-container
+              *ngIf="transacciones.tipo === 'G' ||
+                      (transacciones.tipo === 'T' && transacciones.cuenta_origen_debito && transacciones.cuenta_destino_credito && !transacciones.cuenta_destino_debito)">
               - {{ transacciones.monto | currency:'USD':'symbol':'1.2-2' }}
             </ng-container>
           </td>
@@ -78,13 +83,13 @@
             </ng-container>
           </td>
           <td class="text-center">
-            <button (click)="eliminarTransacciones(transacciones.transferencia_id)"
+            <button (click)="eliminarTransacciones(transacciones.transferencia_id)" *ngIf="transacciones.tipo === 'T'"
               class="bg-gray-100 px-3 py-1 rounded-lg transition-all hover:bg-gray-200">
               <fa-icon [icon]="faTrash" class="text-sm"></fa-icon>
             </button>
           </td>
           <td class="text-center">
-            <button (click)="editarTransacciones(transacciones)"
+            <button (click)="editarTransacciones(transacciones)" *ngIf="transacciones.tipo === 'T'"
               class="bg-gray-100 px-3 py-1 rounded-lg transition-all hover:bg-gray-200">
               <fa-icon [icon]="faPenToSquare" class="text-sm"></fa-icon>
             </button>

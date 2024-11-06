@@ -5,11 +5,11 @@
       Complete los detalles de la nueva transacción aquí. Haga clic en guardar cuando termine.
     </p>
 
-    <form [formGroup]="transaccionesForm" (ngSubmit)="onSubmit()" class="bg-white rounded-lg space-y-6">
+    <form [formGroup]="transferenciasForm" (ngSubmit)="onSubmit()" class="bg-white rounded-lg space-y-6">
       <div class="relative">
-        <input id="monto_transacciones" type="text" formControlName="monto_transacciones" placeholder=" " required  currencyMask [options]="{ prefix: '$ ', thousands: ',', decimal: '.', precision: 2, align : 'left' } "
+        <input id="monto" type="text" formControlName="monto" placeholder=" " required  currencyMask [options]="{ prefix: '$ ', thousands: ',', decimal: '.', precision: 2, align : 'left' } "
           class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
-        <label for="monto_transacciones"
+        <label for="monto"
           class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
           Monto
         </label>
@@ -25,32 +25,63 @@
         <fa-icon [icon]="faMagnifyingGlass" class="text-sm cursor-pointer" (click)="Lookup('TarjetasDebito')"></fa-icon>
       </div>
 
-      <div class="relative flex items-center gap-2">
-        <input id="cuenta_destino_debito" type="text" placeholder=" " [value]="nombreCuentaDestino" disabled required
+      <div >
+        <span>Se transfiere a: </span>
+        <select [value]="selectedPaymentMethod" (change)="onPaymentMethodChange($event)" class="border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none">
+          <option value="">Selecciona una opción</option>
+          <option value="credito">Tarjeta de Crédito</option>
+          <option value="debito">Tarjeta de Débito</option>
+        </select>
+      </div>
+
+      <!-- Div para Tarjeta de Crédito -->
+      <div *ngIf="selectedPaymentMethod === 'credito'" class="relative flex items-center gap-2">
+        <input id="cuenta_destino_credito" type="text" placeholder=" " [value]="nombreCuentaCredito" disabled required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="cuenta_destino_credito"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          Tarjeta Crédito
+        </label>
+        <fa-icon [icon]="faMagnifyingGlass" class="text-sm cursor-pointer" (click)="Lookup('TarjetaDestinoCredito')"></fa-icon>
+      </div>
+
+      <!-- Div para Tarjeta de Débito -->
+      <div *ngIf="selectedPaymentMethod === 'debito'" class="relative flex items-center gap-2">
+        <input id="cuenta_destino_debito" type="text" placeholder=" " [value]="nombreCuentaDebito" disabled required
           class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
         <label for="cuenta_destino_debito"
           class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
-          A
+          Tarjeta Débito
         </label>
-        <fa-icon [icon]="faMagnifyingGlass" class="text-sm cursor-pointer" (click)="Lookup('TarjetasDebito')"></fa-icon>
+        <fa-icon [icon]="faMagnifyingGlass" class="text-sm cursor-pointer" (click)="Lookup('TarjetaDebitoDestino')"></fa-icon>
       </div>
 
       <div class="relative">
-        <input id="fecha_transacciones" type="date" formControlName="fecha_transacciones" (change)="seleccionarFecha($event)" placeholder=" " required
+        <input id="fecha" type="date" formControlName="fecha" (change)="seleccionarFecha($event)" placeholder=" " required
           class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
-        <label for="fecha_transacciones"
+        <label for="fecha"
           class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
           Fecha
         </label>
       </div>
 
       <div class="relative">
-        <input id="descripcion_transacciones" type="text" formControlName="descripcion_transacciones" placeholder=" " required
+        <input id="descripcion" type="text" formControlName="descripcion" placeholder=" " required
           class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
-        <label for="descripcion_transacciones"
+        <label for="descripcion"
           class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
           Descripción
         </label>
+      </div>
+
+      <div class="relative flex items-center gap-2">
+        <input id="categoria_id" type="text" placeholder=" " [value]="nombreCategoria" disabled required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <label for="categoria_id"
+          class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
+          Categoría
+        </label>
+        <fa-icon [icon]="faMagnifyingGlass" class="text-sm cursor-pointer" (click)="Lookup('Categorias')"></fa-icon>
       </div>
 
       <div class="flex justify-end mt-8">
