@@ -95,7 +95,6 @@ export class TransferenciasComponent {
       ? this.transaccionesFiltrados
       : this.transacciones;
 
-    console.log(transaccionesAConsiderar);
     const ingresos = transaccionesAConsiderar
       .filter(transaccion => transaccion.tipo === 'I') // Filtrar ingresos
       .reduce((sum, transaccion) => sum + transaccion.monto, 0); // Sumar montos de ingresos
