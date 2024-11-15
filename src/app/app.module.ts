@@ -41,6 +41,7 @@ import { GastoDialogComponent } from './dialog/gastoDialog/gastoDialog.component
 import { TransaccionesDialogComponent } from './dialog/transaccionesDialog/transaccionesDialog.component';
 import { TransferenciasComponent } from './modules/transferencias/transferencias.component';
 import { MsiComponent } from './modules/msi/msi.component';
+import { MsiDetalleComponent } from './item/msiDetalle/msiDetalle.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { MsiComponent } from './modules/msi/msi.component';
     GastoDialogComponent,
     TransferenciasComponent,
     TransaccionesDialogComponent,
-    MsiComponent
+    MsiComponent,
+    MsiDetalleComponent
   ],
   imports: [
     BrowserModule,

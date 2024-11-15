@@ -1,0 +1,59 @@
+<div class="container mx-auto p-4">
+  <button (click)="cerrar()" class="border border-gray-300 rounded-md py-2 px-4 hover:bg-gray-100 mb-4">
+    <fa-icon [icon]="faArrowLeft" class="h-4 w-4"></fa-icon> Cerrar detalles </button>
+      <div class="space-y-4">
+        <div class="border rounded shadow p-4">
+          <h2 class="text-2xl font-semibold mb-4">{{ compraSeleccionada.descripcion }}</h2>
+          <div class="space-y-4 mt-4">
+            <div class="flex justify-between">
+              <span class="">Monto total:</span>
+              <span>${{ compraSeleccionada.monto_total | number }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="">Fecha de inicio:</span>
+              <span>{{ compraSeleccionada.fecha_compra | date: 'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="">Fecha de finalización:</span>
+              <span>{{ compraSeleccionada.fechaFinalizacion | date: 'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="">Saldo pendiente:</span>
+              <span class="text-red-500">
+                ${{ (compraSeleccionada.monto_total - (compraSeleccionada.monto_mensual * (compraSeleccionada.num_meses
+                -
+                compraSeleccionada.meses_restantes))) | number }}
+              </span>
+            </div>
+          </div>
+
+          <table class="w-full mt-6 border">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="p-2 text-left">Número de pago</th>
+                <th class="p-2 text-left">Fecha</th>
+                <th class="p-2 text-left">Monto</th>
+                <th class="p-2 text-left">Estatus</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pago of compraSeleccionada.pagosRealizados; let i = index"
+                [class.bg-gray-50]="i % 2 === 0">
+                <td class="p-2">Pago {{ pago.numero }} de {{ compraSeleccionada.pagosRealizados.length }}</td>
+                <td class="p-2">{{ pago.fecha | date: 'dd/MM/yyyy' }}</td>
+                <td class="p-2">${{ compraSeleccionada.monto_mensual | number }}</td>
+                <td class="p-2">
+                  <span *ngIf="pago.estatus === 'Pagado'" class="text-green-500">Pagado</span>
+                  <span *ngIf="pago.estatus !== 'Pagado'" class="text-yellow-500">Pendiente</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- <div class="mt-6">
+          <h3 class="mb-2">Notas adicionales:</h3>
+          <textarea class="w-full p-2 border rounded" rows="4" placeholder="Añade notas o recordatorios aquí..."></textarea>
+        </div> -->
+        </div>
+      </div>
+</div>

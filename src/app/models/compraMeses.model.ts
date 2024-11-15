@@ -12,4 +12,6 @@ export interface CompraMeses {
   tarjeta: TarjetaCredito;
   usuario: Usuario;
   gasto: Gasto;
+  meses_restantes: number;
+  proximo_pago: Date;
 }
