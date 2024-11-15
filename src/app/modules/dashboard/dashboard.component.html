@@ -10,7 +10,7 @@
         <fa-icon [icon]="faDollarSign" class="h-4 w-4 text-gray-500"></fa-icon>
       </div>
       <div class="card-content">
-        <div class="text-4xl font-bold">${{ balance }}</div>
+        <div class="text-4xl font-bold">$ {{ resumenFinanciero.saldo_total }}</div>
         <p class="text-xs text-muted-foreground">+20.1% del mes pasado</p>
       </div>
     </div>
@@ -22,7 +22,7 @@
         <fa-icon [icon]="faArrowDown" class="h-4 w-4 text-red-500"></fa-icon>
       </div>
       <div class="card-content">
-        <div class="text-2xl font-bold">${{ gastos }}</div>
+        <div class="text-2xl font-bold">${{ resumenFinanciero.total_gastos }}</div>
         <p class="text-xs text-muted-foreground">-12% del mes pasado</p>
       </div>
     </div>
@@ -34,7 +34,7 @@
         <fa-icon [icon]="faArrowUp" class="h-4 w-4 text-green-500"></fa-icon>
       </div>
       <div class="card-content">
-        <div class="text-2xl font-bold">${{ ingresos }}</div>
+        <div class="text-2xl font-bold">${{ resumenFinanciero.total_ingresos }}</div>
         <p class="text-xs text-muted-foreground">+8% del mes pasado</p>
       </div>
     </div>
@@ -45,13 +45,13 @@
         <h3>Metas de Ahorro</h3>
       </div>
       <div class="card-content space-y-4">
-        <div *ngFor="let meta of metasAhorro">
+        <div *ngFor="let meta of resumenFinanciero.metas_ahorro ">
           <div class="flex items-center justify-between mb-1">
-            <span class="text-sm font-medium">{{ meta.name }}</span>
-            <span class="text-sm font-medium">{{ meta.value }}%</span>
+            <span class="text-sm font-medium">{{ meta.descripcion }}</span>
+            <span class="text-sm font-medium">{{ (meta.ahorro / 1000) * 100 }}%</span>
           </div>
           <div class="h-2 bg-gray-200 rounded-full">
-            <div class="h-full bg-primary rounded-full" [style.width.%]="meta.value"></div>
+            <div class="h-full bg-primary rounded-full" [style.width.%]="(meta.ahorro / 1000) * 100 "></div>
           </div>
         </div>
       </div>
@@ -64,13 +64,13 @@
         <fa-icon [icon]="faCreditCard" class="h-4 w-4 text-gray-500"></fa-icon>
       </div>
       <div class="card-content">
-        <div class="text-2xl font-bold">${{ deuda }}</div>
+        <div class="text-2xl font-bold">${{ resumenFinanciero.saldo_pendiente }}</div>
         <p class="text-xs text-muted-foreground">-5% del mes pasado</p>
       </div>
     </div>
 
     <!-- Progreso del Presupuesto -->
-    <div class="card">
+    <!-- <div class="card">
       <div class="card-header">
         <h3 class="text-sm font-medium">Progreso del Presupuesto</h3>
         <fa-icon [icon]="faPiggyBank" class="h-4 w-4 text-gray-500"></fa-icon>
@@ -86,7 +86,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Transacciones Recientes -->
     <div class="col-span-2 card">
@@ -94,19 +94,26 @@
         <h3>Transacciones Recientes</h3>
       </div>
       <div class="card-content space-y-4">
-        <div *ngFor="let transaccion of transacciones" class="flex justify-between items-center">
+        <div *ngFor="let transaccion of resumenFinanciero.transacciones_recientes"
+          class="flex justify-between items-center">
           <div class="flex items-center space-x-4">
-            <div class="w-8 h-8 rounded-full flex items-center justify-center text-center" [ngClass]="transaccion.iconColor">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center text-center" [ngClass]="{
+              'bg-green-500': transaccion.tipo === 'I',
+              'bg-red-500': transaccion.tipo === 'G',
+              'bg-gray-500': transaccion.tipo === 'A' || transaccion.tipo === 'T'
+            }">
               <fa-icon [icon]="faShoppingBag" class="h-4 w-4 text-primary-foreground flex justify-center"></fa-icon>
             </div>
 
             <div>
-              <p class="text-sm font-medium">{{ transaccion.name }}</p>
+              <p class="text-sm font-medium">{{ transaccion.descripcion }}</p>
               <p class="text-xs text-muted-foreground">{{ transaccion.fecha }}</p>
             </div>
           </div>
-          <p class="text-sm font-medium" [ngClass]="{ 'text-green-500': transaccion.amount > 0, 'text-red-500': transaccion.amount < 0 }">
-            {{ transaccion.amount | currency }}
+          <p class="text-sm font-medium" [ngClass]="{ 'text-green-500': transaccion.tipo === 'I',
+            'text-red-500': transaccion.tipo === 'G',
+            'text-gray-500': transaccion.tipo === 'A' || transaccion.tipo === 'T' }">
+            {{ transaccion.monto | currency }}
           </p>
         </div>
       </div>
