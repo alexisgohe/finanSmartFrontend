@@ -18,12 +18,14 @@ export class TarjetaCreditoItemComponent implements OnInit {
   @Output() edit = new EventEmitter<number>();
   @Output() delete = new EventEmitter<number>();
   mostrarIconos: boolean = false;
+  mesActual: any;
 
   constructor(
     public dialog: MatDialog,
   ) { }
 
   ngOnInit() {
+    this.mesActual = new Date().getMonth() + 1;
   }
 
   onEditClick() {

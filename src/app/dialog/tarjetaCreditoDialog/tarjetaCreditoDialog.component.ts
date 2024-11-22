@@ -19,6 +19,9 @@ export interface DialogData {
 export class TarjetaCreditoDialogComponent implements OnInit {
   tarjetaForm!: FormGroup;
   userId: any;
+  diasDelMes: number[] = Array.from({ length: 31 }, (_, i) => i + 1);
+  mesActual: any;
+
 
   get fControlH() {
     return this.tarjetaForm.controls;
@@ -55,6 +58,8 @@ export class TarjetaCreditoDialogComponent implements OnInit {
     }
 
     this.fControlH['usuario'].setValue(this.userId);
+
+    this.mesActual = new Date().getMonth() + 1;
   }
 
   cargarForm(): void {
