@@ -42,6 +42,7 @@
           </th>
           <th class="text-center" pSortableColumn="monto">Ingreso <p-sortIcon field="monto"></p-sortIcon></th>
           <th class="text-center" pSortableColumn="monto">Gasto <p-sortIcon field="monto"></p-sortIcon></th>
+          <th class="text-center" pSortableColumn="monto">Ahorro <p-sortIcon field="monto"></p-sortIcon></th>
           <th class="text-center" pSortableColumn="descripcion">Descripción <p-sortIcon
               field="descripcion"></p-sortIcon>
           </th>
@@ -70,6 +71,12 @@
               *ngIf="transacciones.tipo === 'G' ||
                       (transacciones.tipo === 'T' && transacciones.cuenta_origen_debito && transacciones.cuenta_destino_credito && !transacciones.cuenta_destino_debito)">
               - {{ transacciones.monto | currency:'USD':'symbol':'1.2-2' }}
+            </ng-container>
+          </td>
+          <td class="text-center">
+            <ng-container
+              *ngIf="transacciones.tipo === 'A'">
+              {{ transacciones.monto | currency:'USD':'symbol':'1.2-2' }}
             </ng-container>
           </td>
           <td class="text-center">{{ transacciones.descripcion }}</td>

@@ -19,7 +19,7 @@
           </div>
           <div>
             <p class="text-xs">FECHA CORTE</p>
-            <p>{{ tarjetaForm.value.fecha_corte || 'MM/AA' }}</p>
+            <p>{{ tarjetaForm.value.fecha_corte }}<span *ngIf="tarjetaForm.value.fecha_corte">/{{ mesActual }}</span></p>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
       </div>
 
       <div class="relative">
-        <input id="banco_tarjeta" formControlName="banco_tarjeta" type="text" placeholder=" " required
+        <input id="banco_tarjeta" formControlName="banco_tarjeta" type="number" placeholder=" " required
           class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
         <label for="banco_tarjeta"
           class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
@@ -73,8 +73,11 @@
       </div>
 
       <div class="relative">
-        <input id="fecha_corte" formControlName="fecha_corte" type="date" placeholder=" " required
-          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <select id="fecha_corte" formControlName="fecha_corte" required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm">
+          <option value="" disabled selected>Selecciona el día</option>
+          <option *ngFor="let dia of diasDelMes" [value]="dia">{{ dia }}</option>
+        </select>
         <label for="fecha_corte"
           class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
           Fecha de Corte
@@ -82,8 +85,11 @@
       </div>
 
       <div class="relative">
-        <input id="fecha_pago" formControlName="fecha_pago" type="date" placeholder=" " required
-          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm" />
+        <select id="fecha_pago" formControlName="fecha_pago" required
+          class="peer border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring focus:ring-gray-200 focus:outline-none transition-all shadow-sm">
+          <option value="" disabled selected>Selecciona el día</option>
+          <option *ngFor="let dia of diasDelMes" [value]="dia">{{ dia }}</option>
+        </select>
         <label for="fecha_pago"
           class="absolute text-gray-600 left-3 -top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2.5 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-600">
           Fecha de Pago

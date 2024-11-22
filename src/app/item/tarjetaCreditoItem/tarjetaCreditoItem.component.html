@@ -36,11 +36,11 @@
       <div class="flex justify-between text-xs text-muted-foreground">
         <div class="flex items-center">
           <fa-icon class="h-3 w-3 mr-1" [icon]="faCalendar" class="h-4 w-4 text-gray-500"></fa-icon>
-          <span>Corte: {{ tarjeta.fecha_corte }}</span>
+          <span>Corte: {{ tarjeta.fecha_corte }}/{{mesActual}}</span>
         </div>
         <div class="flex items-center">
           <fa-icon class="h-3 w-3 mr-1" [icon]="faCalendar" class="h-4 w-4 text-gray-500"></fa-icon>
-          <span>Pago: {{ tarjeta.fecha_pago }}</span>
+          <span>Pago: {{ tarjeta.fecha_pago }}/{{mesActual}}</span>
         </div>
       </div>
     </div>
